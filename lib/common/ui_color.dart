@@ -25,13 +25,13 @@ class TColor {
   static Color get bg => const Color(0xff6D1A74);
   static Color get darkGray => const Color(0xff383B49);
   static Color get lightGray => const Color(0xffD0D1D4);
-  static BoxDecoration get gradientBg => const BoxDecoration(
+  static BoxDecoration get gradientBg =>  BoxDecoration(
     gradient: LinearGradient(
       colors: [
-        Color(0xff6D1A74),
-        Color(0xff2A2A2A)
+        const Color(0xff6D1A74),
+        Colors.black.withOpacity(0.5)
       ],
-      begin: Alignment.topRight,
+      begin: Alignment.topCenter,
       end: Alignment.bottomLeft
     )
   );
