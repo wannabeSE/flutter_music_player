@@ -34,7 +34,7 @@ class BottomNavbar extends StatelessWidget {
                 label: 'Music',),
               NavigationDestination(
                   icon: SvgPicture.asset(
-                    'assets/icons/fav.svg',
+                    'assets/icons/favorite.svg',
                     colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                     height: iconHeight,
                   ),

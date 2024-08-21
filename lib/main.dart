@@ -18,8 +18,9 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Poppins',
         scaffoldBackgroundColor: Colors.transparent,
         textTheme: Theme.of(context).textTheme.apply(
+          fontFamily: 'Poppins',
           bodyColor: TColor.primaryText,
-          displayColor: TColor.primaryText
+          displayColor: TColor.primaryText,
         ),
         colorScheme: ColorScheme.fromSeed(
             seedColor: TColor.primary
