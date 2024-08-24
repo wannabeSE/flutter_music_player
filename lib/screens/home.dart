@@ -14,9 +14,9 @@ class Home extends StatelessWidget {
         body: SingleChildScrollView(
           child: LayoutBuilder(
             builder: (context, constraint){
-              return Column(
+              return const Column(
                 children: [
-
+                  Text('Hello')
                 ],
               );
             }
