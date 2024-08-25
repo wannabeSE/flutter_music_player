@@ -8,12 +8,12 @@ class BottomNavbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     NavigationController navController = Get.put(NavigationController());
-    double iconHeight = Get.height * 0.035;
+    double iconHeight = 28;
     return Scaffold(
       body: Obx(() => navController.screens[navController.selectedIndex.value]),
       bottomNavigationBar: Obx(() =>
           NavigationBar(
-            height: Get.height * 0.1,
+            height: 60,
             selectedIndex: navController.selectedIndex.value,
             onDestinationSelected: (index) => navController.selectedIndex.value = index,
             destinations: [
@@ -38,7 +38,7 @@ class BottomNavbar extends StatelessWidget {
                     colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                     height: iconHeight,
                   ),
-                  label: 'Favourite'
+                  label: 'Favorite'
             ),
           ]),
       ),
