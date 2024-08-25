@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_music_player/screens/music/music.dart';
 import 'package:get/get.dart';
-import '../screens/home.dart';
+import '../screens/home/home.dart';
 import 'package:flutter_svg/svg.dart';
 class BottomNavbar extends StatelessWidget {
   const BottomNavbar({super.key});
@@ -13,7 +14,7 @@ class BottomNavbar extends StatelessWidget {
       body: Obx(() => navController.screens[navController.selectedIndex.value]),
       bottomNavigationBar: Obx(() =>
           NavigationBar(
-            height: 60,
+            height: 70,
             selectedIndex: navController.selectedIndex.value,
             onDestinationSelected: (index) => navController.selectedIndex.value = index,
             destinations: [
@@ -49,7 +50,7 @@ class NavigationController extends GetxController{
   RxInt selectedIndex = 0.obs;
   final screens = [
     const Home(),
-    Container(color: Colors.redAccent,),
+    const MusicScreen(),
     Container(color: Colors.amber,)
   ];
 }
