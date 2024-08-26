@@ -19,12 +19,12 @@ class BottomNavbar extends StatelessWidget {
             onDestinationSelected: (index) => navController.selectedIndex.value = index,
             destinations: [
               NavigationDestination(
-                  icon: SvgPicture.asset(
-                    'assets/icons/home.svg',
-                    colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                    height: iconHeight,
-                  ),
-                  label: 'Home'
+                icon: SvgPicture.asset(
+                  'assets/icons/home.svg',
+                  colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                  height: iconHeight,
+                ),
+                label: 'Home'
               ),
               NavigationDestination(
                 icon: SvgPicture.asset(
@@ -34,12 +34,20 @@ class BottomNavbar extends StatelessWidget {
                 ),
                 label: 'Music',),
               NavigationDestination(
-                  icon: SvgPicture.asset(
-                    'assets/icons/favorite.svg',
-                    colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                    height: iconHeight,
-                  ),
-                  label: 'Favorite'
+                icon: SvgPicture.asset(
+                  'assets/icons/library.svg',
+                  colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                  height: iconHeight,
+                ),
+                label: 'Library'
+              ),
+              NavigationDestination(
+                icon: SvgPicture.asset(
+                  'assets/icons/favorite.svg',
+                  colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                  height: iconHeight,
+                ),
+                label: 'Favorite'
             ),
           ]),
       ),
@@ -51,6 +59,7 @@ class NavigationController extends GetxController{
   final screens = [
     const Home(),
     const MusicScreen(),
-    Container(color: Colors.amber,)
+    Container(color: Colors.amber,),
+    Container(color: Colors.blue,)
   ];
 }

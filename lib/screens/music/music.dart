@@ -14,24 +14,27 @@ class MusicScreen extends StatelessWidget {
     return Container(
       decoration: TColor.gradientBg,
       child: Scaffold(
-          appBar: AppBar(
-            leading: Padding(
-              padding: EdgeInsets.all(arrowPadding),
-              child: SvgPicture.asset(
-                'assets/icons/left_arrow.svg',
-                colorFilter:
-                  const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-              ),
-            ),
+      appBar: AppBar(
+        leading: Padding(
+          padding: EdgeInsets.all(arrowPadding),
+          child: SvgPicture.asset(
+            'assets/icons/left_arrow.svg',
+            colorFilter:
+            const ColorFilter.mode(Colors.white, BlendMode.srcIn),
           ),
-          body: SizedBox(
-              width: double.infinity,
-              height: double.infinity,
-              child: ListView.builder(
-                  itemCount: musics.length,
-                  itemBuilder: (context, index) => MusicTile(
-                        index: index,
-                      )))),
+        ),
+      ),
+      body: SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: ListView.builder(
+          itemCount: musics.length,
+          itemBuilder: (context, index) => MusicTile(
+              index: index,
+            )
+          )
+        )
+      ),
     );
   }
 }

@@ -28,23 +28,22 @@ class Home extends StatelessWidget {
                     child: const Text(
                       'Popular Artists',
                       style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                      TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
                     ),
                   ),
                   TextButton(
-                      onPressed: () {},
-                      style: const ButtonStyle(
-                          foregroundColor:
-                            WidgetStatePropertyAll(Colors.white)
-                          ),
-                      child: const Text(
-                        'View all',
-                        style: TextStyle(
-                            //fontWeight: FontWeight.w400,
-                            fontSize: 10
-                          ),
-                      )
+                    onPressed: () {},
+                    style: const ButtonStyle(
+                      foregroundColor:
+                        WidgetStatePropertyAll(Colors.white)
+                      ),
+                    child: const Text(
+                      'View all',
+                      style: TextStyle(
+                        fontSize: 10
+                      ),
                     )
+                  )
                 ],
               ),
               Container(

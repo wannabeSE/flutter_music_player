@@ -75,12 +75,12 @@ class MusicTile extends StatelessWidget {
             colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
             height: 20,
           ),
-          const SizedBox(width: 8,),
-          const Icon(
-            Icons.play_arrow_outlined,
-            color: Colors.white,
-            size: 24,
-          )
+          const SizedBox(width: 20,),
+          SvgPicture.asset(
+            'assets/icons/play.svg',
+            colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+            height: 16,
+          ),
         ],
       ),
     );
