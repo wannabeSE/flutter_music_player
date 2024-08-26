@@ -6,8 +6,10 @@ import '../../../dummy_data/song_list.dart';
 
 class MusicTile extends StatelessWidget {
   final int index;
+  final List data;
   const MusicTile({
-    super.key, required this.index,
+    super.key,
+    required this.index, required this.data,
   });
 
   @override
@@ -27,12 +29,10 @@ class MusicTile extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               image: const DecorationImage(
-                //TODO: Make it Dynamic
-                image: NetworkImage(
-                    'https://wallpapers.com/images/high/dreadlocks-kendrick-lamar-mdxg6124r23k078x.webp'
-                  ),
-                fit: BoxFit.cover
-              ),
+                  //TODO: Make it Dynamic
+                  image: NetworkImage(
+                      'https://wallpapers.com/images/high/dreadlocks-kendrick-lamar-mdxg6124r23k078x.webp'),
+                  fit: BoxFit.cover),
             ),
           ),
           const SizedBox(
@@ -48,23 +48,22 @@ class MusicTile extends StatelessWidget {
                 SizedBox(
                   width: 100,
                   child: Text(
-                    '${musics[index]['name']}',
+                    '${data[index]['name']}',
                     style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      overflow: TextOverflow.ellipsis
-                    ),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        overflow: TextOverflow.ellipsis),
                   ),
                 ),
-                const SizedBox(height: 8,),
+                const SizedBox(
+                  height: 8,
+                ),
                 SizedBox(
                   width: 200,
                   child: Text(
-                    '${musics[index]['artist']}',
+                    '${data[index]['artist']}',
                     style: const TextStyle(
-                      overflow: TextOverflow.ellipsis,
-                      fontSize: 10
-                    ),
+                        overflow: TextOverflow.ellipsis, fontSize: 10),
                   ),
                 )
               ],
@@ -75,7 +74,9 @@ class MusicTile extends StatelessWidget {
             colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
             height: 20,
           ),
-          const SizedBox(width: 20,),
+          const SizedBox(
+            width: 20,
+          ),
           SvgPicture.asset(
             'assets/icons/play.svg',
             colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
