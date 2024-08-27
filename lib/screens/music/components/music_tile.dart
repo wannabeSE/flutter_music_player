@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-import '../../../dummy_data/song_list.dart';
+//import '../../../dummy_data/song_list.dart';
 
 class MusicTile extends StatelessWidget {
   final int index;
@@ -41,28 +41,28 @@ class MusicTile extends StatelessWidget {
           Container(
             width: Get.width * 0.6,
             margin: const EdgeInsets.only(left: 4, top: 12),
-            child: Column(
+            child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //Track title
                 SizedBox(
                   width: 100,
                   child: Text(
-                    '${data[index]['name']}',
-                    style: const TextStyle(
+                    'Music Title',
+                    style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                         overflow: TextOverflow.ellipsis),
                   ),
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 8,
                 ),
                 SizedBox(
                   width: 200,
                   child: Text(
-                    '${data[index]['artist']}',
-                    style: const TextStyle(
+                    'Artist name',
+                    style: TextStyle(
                         overflow: TextOverflow.ellipsis, fontSize: 10),
                   ),
                 )

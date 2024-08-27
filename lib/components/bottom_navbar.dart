@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/screens/music/music.dart';
+import 'package:flutter_music_player/screens/test_screen.dart';
 import 'package:get/get.dart';
 import '../screens/home/home.dart';
 import 'package:flutter_svg/svg.dart';
@@ -59,7 +60,8 @@ class NavigationController extends GetxController{
   final screens = [
     const Home(),
     const MusicScreen(),
-    Container(color: Colors.amber,),
+    const TestScreen(),
+    //Container(color: Colors.amber,),
     Container(color: Colors.blue,)
   ];
 }

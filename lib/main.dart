@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/common/ui_color.dart';
-import 'package:flutter_music_player/components/bottom_navbar.dart';
+import 'package:flutter_music_player/screens/test_screen.dart';
 import 'package:get/get.dart';
 
-void main() {
+void main() async{
   runApp(const MyApp());
 }
 
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: false,
       ),
-      home: const BottomNavbar(),
+      home: const TestScreen(), //?test splash screen
     );
   }
 }
