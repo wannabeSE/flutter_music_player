@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_music_player/screens/music/music.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 class MusicTile extends StatelessWidget {
   final int index;
-  final List data;
+  final List songList;
   const MusicTile({
     super.key,
-    required this.index, required this.data,
+    required this.index, required this.songList,
   });
 
   @override
   Widget build(BuildContext context) {
+    final audioController = Get.put(PlayerController());
     return Container(
       width: Get.width * 0.9,
       height: 70,
@@ -26,11 +29,14 @@ class MusicTile extends StatelessWidget {
             width: 50,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              image: const DecorationImage(
-                  //TODO: Make it Dynamic
-                  image: NetworkImage(
-                      'https://wallpapers.com/images/high/dreadlocks-kendrick-lamar-mdxg6124r23k078x.webp'),
-                  fit: BoxFit.cover),
+            ),
+            child: QueryArtworkWidget(
+              id: songList[index].id,
+              type: ArtworkType.AUDIO,
+              nullArtworkWidget: const Icon(
+                Icons.music_note,
+                color: Colors.white,
+              ),
             ),
           ),
           const SizedBox(
@@ -39,29 +45,29 @@ class MusicTile extends StatelessWidget {
           Container(
             width: Get.width * 0.6,
             margin: const EdgeInsets.only(left: 4, top: 12),
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //Track title
                 SizedBox(
                   width: 100,
                   child: Text(
-                    'Music Title',
-                    style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        overflow: TextOverflow.ellipsis),
+                    songList[index].displayNameWOExt,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      overflow: TextOverflow.ellipsis
+                    ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 SizedBox(
                   width: 200,
                   child: Text(
-                    'Artist name',
-                    style: TextStyle(
-                        overflow: TextOverflow.ellipsis, fontSize: 10),
+                    songList[index].artist,
+                    style: const TextStyle(overflow: TextOverflow.ellipsis, fontSize: 10),
                   ),
                 )
               ],
@@ -72,13 +78,18 @@ class MusicTile extends StatelessWidget {
             colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
             height: 20,
           ),
-          const SizedBox(
-            width: 20,
-          ),
-          SvgPicture.asset(
-            'assets/icons/play.svg',
-            colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-            height: 16,
+          // const SizedBox(
+          //   width: 8,
+          // ),
+          IconButton(
+            onPressed: (){
+              audioController.playSong(songList[index].uri);
+            },
+            icon: SvgPicture.asset(
+              'assets/icons/play.svg',
+              colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+              height: 16,
+            ),
           ),
         ],
       ),

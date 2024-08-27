@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_music_player/common/ui_color.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'components/music_tile.dart';
 
@@ -32,7 +33,7 @@ class MusicScreen extends StatelessWidget {
               ignoreCase: false,
               orderType: OrderType.ASC_OR_SMALLER,
               sortType: null,
-              uriType: UriType.INTERNAL
+              uriType: UriType.EXTERNAL
             ),
             builder: (BuildContext ctx, snapshot) {
               if (snapshot.data == null) {
@@ -42,12 +43,12 @@ class MusicScreen extends StatelessWidget {
               } else if (snapshot.data!.isEmpty) {
                 return const Center(child: Text('No Songs Found'));
               } else {
-                debugPrint('from music->${snapshot.data}');
+                //debugPrint('from music->${snapshot.data}');
                 return ListView.builder(
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) =>
                 MusicTile(
-                  data: snapshot.data!,
+                  songList: snapshot.data!,
                   index: index,
                   )
                 );
@@ -61,4 +62,17 @@ class MusicScreen extends StatelessWidget {
 }
 class PlayerController extends GetxController {
   final audioQuery = OnAudioQuery();
+  final audioPlayer = AudioPlayer();
+
+  playSong(String? audioPath){
+    try{
+      audioPlayer.setAudioSource(
+          AudioSource.uri(Uri.parse(audioPath!)
+          ),
+      );
+      audioPlayer.play();
+    }on Exception catch(e){
+      debugPrint(e.toString());
+    }
+  }
 }
