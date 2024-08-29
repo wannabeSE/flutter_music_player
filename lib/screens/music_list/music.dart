@@ -33,7 +33,7 @@ class MusicListScreen extends StatelessWidget {
               ignoreCase: false,
               orderType: OrderType.ASC_OR_SMALLER,
               sortType: null,
-              uriType: UriType.INTERNAL //TODO: change it to external for physical devices
+              uriType: UriType.EXTERNAL //TODO: change it to external for physical devices
             ),
             builder: (BuildContext ctx, snapshot) {
               if (snapshot.data == null) {

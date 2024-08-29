@@ -4,26 +4,28 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
+import '../music.dart';
+
 class MusicTile extends StatelessWidget {
   final SongModel song;
   //final List songList;
-  const MusicTile({
-    super.key,
-    required this.song
-  });
+  const MusicTile({super.key, required this.song});
 
   @override
   Widget build(BuildContext context) {
-    //final audioController = Get.put(PlayerController());
-    //bool isPlaying = false;
+    final audioController = Get.put(PlayerController());
     return InkWell(
-      onTap: () => Get.to(AudioPlayerScreen(song: song)),
+      onTap: () {
+        Get.to(AudioPlayerScreen(song: song));
+        audioController.playSong(song.uri);
+      },
       child: Container(
         width: Get.width * 0.9,
         height: 70,
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         decoration: const BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.white38, width: 2))),
+            border:
+                Border(bottom: BorderSide(color: Colors.white38, width: 2))),
         child: Row(
           children: [
             //music cover image
@@ -57,10 +59,9 @@ class MusicTile extends StatelessWidget {
                     child: Text(
                       song.displayNameWOExt,
                       style: const TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        overflow: TextOverflow.ellipsis
-                      ),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          overflow: TextOverflow.ellipsis),
                     ),
                   ),
                   const SizedBox(
@@ -70,7 +71,8 @@ class MusicTile extends StatelessWidget {
                     width: 200,
                     child: Text(
                       song.artist.toString(),
-                      style: const TextStyle(overflow: TextOverflow.ellipsis, fontSize: 10),
+                      style: const TextStyle(
+                          overflow: TextOverflow.ellipsis, fontSize: 10),
                     ),
                   )
                 ],
@@ -78,7 +80,8 @@ class MusicTile extends StatelessWidget {
             ),
             SvgPicture.asset(
               'assets/icons/favorite.svg',
-              colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+              colorFilter:
+                  const ColorFilter.mode(Colors.white, BlendMode.srcIn),
               height: 20,
             ),
             // const SizedBox(
