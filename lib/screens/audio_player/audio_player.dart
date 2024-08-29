@@ -65,6 +65,8 @@ class AudioPlayerScreen extends StatelessWidget {
                         fontWeight: FontWeight.w600
                       ),
                     ),
+                    //? artist name
+                    //
                     Text(
                       song.artist.toString(),
                       style: const TextStyle(
@@ -77,6 +79,7 @@ class AudioPlayerScreen extends StatelessWidget {
                 ),
               )
             ),
+
             //? audio player controls
             Expanded(
               flex: 2,
@@ -87,13 +90,20 @@ class AudioPlayerScreen extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        const Text('00:00'),
-                        Expanded(
-                            child: Slider(value: 0.0, onChanged: (v) {})),
-                        const Text('04:00')
-                      ],
+                    //? slider and time
+                    Obx(() =>
+                      Row(
+                        children: [
+                          Text(playerController.position.value),
+                          Expanded(
+                              child: Slider(
+                                  value: 0.0,
+                                  onChanged: (v) {}
+                              )
+                          ),
+                          Text(playerController.duration.value)
+                        ],
+                      ),
                     ),
                     const SizedBox(
                       height: 12,

@@ -62,6 +62,19 @@ class PlayerController extends GetxController {
   final audioQuery = OnAudioQuery();
   final audioPlayer = AudioPlayer();
   RxBool isPlaying = false.obs;
+  RxString duration = ''.obs;
+  RxString position = ''.obs;
+
+  updatePosition(){
+    audioPlayer.durationStream.listen((d){
+      // print('duration -> ${d.toString().split('.')[0]}');
+      duration.value = d.toString().split('.')[0];
+    });
+    audioPlayer.positionStream.listen((p){
+      position.value = p.toString().split('.')[0];
+    });
+  }
+
   playSong(String? audioPath){
     try{
       audioPlayer.setAudioSource(
@@ -70,19 +83,10 @@ class PlayerController extends GetxController {
       );
       audioPlayer.play();
       isPlaying(true);
+      updatePosition();
     }on Exception catch(e){
       debugPrint(e.toString());
     }
   }
-  // pauseSong(String? audioPath){
-  //   try{
-  //     audioPlayer.setAudioSource(
-  //       AudioSource.uri(Uri.parse(audioPath!)
-  //       ),
-  //     );
-  //     audioPlayer.pause();
-  //   }on Exception catch(e){
-  //     debugPrint(e.toString());
-  //   }
-  // }
+
 }
