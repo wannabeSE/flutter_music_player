@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/common/ui_color.dart';
 import 'package:flutter_music_player/components/bottom_navbar.dart';
@@ -9,17 +12,34 @@ class TestScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future checkPermissions()async{
-      PermissionStatus permissionStatus = await Permission.audio.request();
-      if(permissionStatus.isDenied){
+
+    checkPermission(PermissionStatus status)async{
+      if(status.isDenied){
         debugPrint('denied');
         await Permission.audio.request();
-      }else if(permissionStatus.isGranted){
+      }else if(status.isGranted){
         debugPrint('Granted');
         Get.to(const BottomNavbar());
       }else{
         openAppSettings();
       }
+
+    }
+    Future requestPermission()async{
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
+      if(Platform.isAndroid){
+        if(androidInfo.version.sdkInt <= 31){
+          PermissionStatus permStat = await Permission.storage.request();
+          checkPermission(permStat);
+        }
+        else{
+          PermissionStatus permissionStatus = await Permission.audio.request();
+          checkPermission(permissionStatus);
+        }
+      }
+
+
+
     }
     return Container(
       decoration: TColor.gradientBg,
@@ -55,7 +75,7 @@ class TestScreen extends StatelessWidget {
             const SizedBox(height: 10,),
             TextButton(
                 onPressed: ()async{
-                  await checkPermissions();
+                  await requestPermission();
                 },
                 child: const Text(
                   'Device files only',
