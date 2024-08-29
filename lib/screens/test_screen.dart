@@ -23,23 +23,21 @@ class TestScreen extends StatelessWidget {
       }else{
         openAppSettings();
       }
-
     }
     Future requestPermission()async{
       final androidInfo = await DeviceInfoPlugin().androidInfo;
       if(Platform.isAndroid){
+        //? for android version 12 or below
         if(androidInfo.version.sdkInt <= 31){
           PermissionStatus permStat = await Permission.storage.request();
           checkPermission(permStat);
         }
+        //? for android version 13 or greater
         else{
           PermissionStatus permissionStatus = await Permission.audio.request();
           checkPermission(permissionStatus);
         }
       }
-
-
-
     }
     return Container(
       decoration: TColor.gradientBg,

@@ -6,8 +6,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'components/music_tile.dart';
 
-class MusicScreen extends StatelessWidget {
-  const MusicScreen({super.key});
+class MusicListScreen extends StatelessWidget {
+  const MusicListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class MusicScreen extends StatelessWidget {
               ignoreCase: false,
               orderType: OrderType.ASC_OR_SMALLER,
               sortType: null,
-              uriType: UriType.EXTERNAL
+              uriType: UriType.INTERNAL //TODO: change it to external for physical devices
             ),
             builder: (BuildContext ctx, snapshot) {
               if (snapshot.data == null) {
@@ -43,13 +43,11 @@ class MusicScreen extends StatelessWidget {
               } else if (snapshot.data!.isEmpty) {
                 return const Center(child: Text('No Songs Found'));
               } else {
-                //debugPrint('from music->${snapshot.data}');
                 return ListView.builder(
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) =>
                 MusicTile(
-                  songList: snapshot.data!,
-                  index: index,
+                  song: snapshot.data![index],
                   )
                 );
               }
@@ -63,16 +61,28 @@ class MusicScreen extends StatelessWidget {
 class PlayerController extends GetxController {
   final audioQuery = OnAudioQuery();
   final audioPlayer = AudioPlayer();
-
+  RxBool isPlaying = false.obs;
   playSong(String? audioPath){
     try{
       audioPlayer.setAudioSource(
-          AudioSource.uri(Uri.parse(audioPath!)
-          ),
+        AudioSource.uri(Uri.parse(audioPath!)
+        ),
       );
       audioPlayer.play();
+      isPlaying(true);
     }on Exception catch(e){
       debugPrint(e.toString());
     }
   }
+  // pauseSong(String? audioPath){
+  //   try{
+  //     audioPlayer.setAudioSource(
+  //       AudioSource.uri(Uri.parse(audioPath!)
+  //       ),
+  //     );
+  //     audioPlayer.pause();
+  //   }on Exception catch(e){
+  //     debugPrint(e.toString());
+  //   }
+  // }
 }
