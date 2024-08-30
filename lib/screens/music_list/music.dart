@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/common/ui_color.dart';
+import 'package:flutter_music_player/getx_controllers/player_controller.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'components/music_tile.dart';
 
@@ -57,36 +57,4 @@ class MusicListScreen extends StatelessWidget {
       ),
     );
   }
-}
-class PlayerController extends GetxController {
-  final audioQuery = OnAudioQuery();
-  final audioPlayer = AudioPlayer();
-  RxBool isPlaying = false.obs;
-  RxString duration = ''.obs;
-  RxString position = ''.obs;
-
-  updatePosition(){
-    audioPlayer.durationStream.listen((d){
-      // print('duration -> ${d.toString().split('.')[0]}');
-      duration.value = d.toString().split('.')[0];
-    });
-    audioPlayer.positionStream.listen((p){
-      position.value = p.toString().split('.')[0];
-    });
-  }
-
-  playSong(String? audioPath){
-    try{
-      audioPlayer.setAudioSource(
-        AudioSource.uri(Uri.parse(audioPath!)
-        ),
-      );
-      audioPlayer.play();
-      isPlaying(true);
-      updatePosition();
-    }on Exception catch(e){
-      debugPrint(e.toString());
-    }
-  }
-
 }

@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_music_player/getx_controllers/player_controller.dart';
 import 'package:flutter_music_player/screens/audio_player/audio_player.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-import '../music.dart';
-
 class MusicTile extends StatelessWidget {
   final SongModel song;
-  //final List songList;
   const MusicTile({super.key, required this.song});
 
   @override
@@ -59,9 +57,10 @@ class MusicTile extends StatelessWidget {
                     child: Text(
                       song.displayNameWOExt,
                       style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          overflow: TextOverflow.ellipsis),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        overflow: TextOverflow.ellipsis
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -72,7 +71,8 @@ class MusicTile extends StatelessWidget {
                     child: Text(
                       song.artist.toString(),
                       style: const TextStyle(
-                          overflow: TextOverflow.ellipsis, fontSize: 10),
+                          overflow: TextOverflow.ellipsis, fontSize: 10
+                      ),
                     ),
                   )
                 ],
@@ -84,24 +84,6 @@ class MusicTile extends StatelessWidget {
                   const ColorFilter.mode(Colors.white, BlendMode.srcIn),
               height: 20,
             ),
-            // const SizedBox(
-            //   width: 8,
-            // ),
-            //! Test IconButton
-            // IconButton(
-            //   onPressed: (){
-            //     audioController.isPlaying.value = !audioController.isPlaying.value;
-            //
-            //     audioController.isPlaying.value
-            //         ? audioController.playSong(songList[index].uri)
-            //         : audioController.pauseSong(songList[index].uri);
-            //   },
-            //   icon: SvgPicture.asset(
-            //     'assets/icons/play.svg',
-            //     colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-            //     height: 16,
-            //   ),
-            // ),
           ],
         ),
       ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/common/ui_color.dart';
-import 'package:flutter_music_player/screens/music_list/music.dart';
+import 'package:flutter_music_player/getx_controllers/player_controller.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -11,7 +11,7 @@ class AudioPlayerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var playerController = Get.find<PlayerController>();
+    PlayerController playerController = Get.find<PlayerController>();
     return Container(
       decoration: TColor.gradientBg,
       child: Scaffold(
@@ -66,7 +66,6 @@ class AudioPlayerScreen extends StatelessWidget {
                       ),
                     ),
                     //? artist name
-                    //
                     Text(
                       song.artist.toString(),
                       style: const TextStyle(
@@ -96,10 +95,17 @@ class AudioPlayerScreen extends StatelessWidget {
                         children: [
                           Text(playerController.position.value),
                           Expanded(
-                              child: Slider(
-                                  value: 0.0,
-                                  onChanged: (v) {}
-                              )
+                            child: Slider(
+                              thumbColor: const Color(0xff6D1A74),
+                              activeColor: const Color(0xff6D1A74),
+                              max: playerController.maxDuration.toDouble(),
+                              min: const Duration(seconds: 0).inSeconds.toDouble(),
+                              value: playerController.currentSliderVal.value,
+                              onChanged: (v) {
+                                playerController.changeDurationToSecToSeek(v.toInt());
+                                v = v;
+                              }
+                            )
                           ),
                           Text(playerController.duration.value)
                         ],
@@ -118,32 +124,33 @@ class AudioPlayerScreen extends StatelessWidget {
                           onPressed: () {},
                         ),
                         //? play/ pause button
-                        Obx(() => CircleAvatar(
-                          radius: 36,
-                          backgroundColor: const Color(0xff6D1A74),
-                          child: Transform.scale(
-                            scale: 2.8,
-                            child: IconButton(
-                              onPressed: () {
-                                if (playerController.isPlaying.value) {
-                                  playerController.audioPlayer.pause();
-                                  playerController.isPlaying(false);
-                                } else {
-                                  playerController.audioPlayer.play();
-                                  playerController.isPlaying(true);
-                                }
-                              },
-                              icon: playerController.isPlaying.value
-                              ? const Icon(Icons.pause_rounded,
-                                  color: Colors.white)
-                              : const Icon(
-                                  Icons.play_arrow_rounded,
-                                  color: Colors.white,
-                              )
+                        Obx(() =>
+                            CircleAvatar(
+                              radius: 36,
+                              backgroundColor: const Color(0xff6D1A74),
+                              child: Transform.scale(
+                                scale: 2.8,
+                                child: IconButton(
+                                  onPressed: () {
+                                    if (playerController.isPlaying.value) {
+                                      playerController.audioPlayer.pause();
+                                      playerController.isPlaying(false);
+                                    } else {
+                                      playerController.audioPlayer.play();
+                                      playerController.isPlaying(true);
+                                    }
+                                  },
+                                  icon: playerController.isPlaying.value
+                                  ? const Icon(Icons.pause_rounded,
+                                      color: Colors.white)
+                                  : const Icon(
+                                      Icons.play_arrow_rounded,
+                                      color: Colors.white,
+                                  )
+                                ),
                             ),
-                          ),
-                        )
-                          ),
+                          )
+                        ),
                         IconButton(
                           icon: controlButtonStyle(Icons.skip_next_rounded),
                           onPressed: () {},
