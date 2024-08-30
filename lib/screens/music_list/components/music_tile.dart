@@ -6,16 +6,21 @@ import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class MusicTile extends StatelessWidget {
-  final SongModel song;
-  const MusicTile({super.key, required this.song});
+  final int index;
+  final List songList;
+  const MusicTile({
+    super.key,
+    required this.index,
+    required this.songList
+  });
 
   @override
   Widget build(BuildContext context) {
     final audioController = Get.put(PlayerController());
     return InkWell(
       onTap: () {
-        Get.to(AudioPlayerScreen(song: song));
-        audioController.playSong(song.uri);
+        Get.to(() => AudioPlayerScreen(songList: songList));
+        audioController.playSong(songList[index].uri, index);
       },
       child: Container(
         width: Get.width * 0.9,
@@ -34,7 +39,7 @@ class MusicTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: QueryArtworkWidget(
-                id: song.id,
+                id: songList[index].id,
                 type: ArtworkType.AUDIO,
                 nullArtworkWidget: const Icon(
                   Icons.music_note,
@@ -55,7 +60,7 @@ class MusicTile extends StatelessWidget {
                   SizedBox(
                     width: 100,
                     child: Text(
-                      song.displayNameWOExt,
+                      songList[index].displayNameWOExt,
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
@@ -69,7 +74,7 @@ class MusicTile extends StatelessWidget {
                   SizedBox(
                     width: 200,
                     child: Text(
-                      song.artist.toString(),
+                      songList[index].artist.toString(),
                       style: const TextStyle(
                           overflow: TextOverflow.ellipsis, fontSize: 10
                       ),

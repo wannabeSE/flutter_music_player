@@ -33,7 +33,7 @@ class MusicListScreen extends StatelessWidget {
               ignoreCase: false,
               orderType: OrderType.ASC_OR_SMALLER,
               sortType: null,
-              uriType: UriType.EXTERNAL //TODO: change it to external for physical devices
+              uriType: UriType.EXTERNAL
             ),
             builder: (BuildContext ctx, snapshot) {
               if (snapshot.data == null) {
@@ -47,7 +47,8 @@ class MusicListScreen extends StatelessWidget {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) =>
                 MusicTile(
-                  song: snapshot.data![index],
+                  songList: snapshot.data!,
+                  index: index,
                   )
                 );
               }
