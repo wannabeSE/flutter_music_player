@@ -15,6 +15,7 @@ class AudioPlayerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PlayerController playerController = Get.find<PlayerController>();
+
     return Container(
       decoration: TColor.gradientBg,
       child: Scaffold(
@@ -86,7 +87,6 @@ class AudioPlayerScreen extends StatelessWidget {
                 ))),
 
             //? audio player controls
-
             Expanded(
                 flex: 2,
                 child: Container(
@@ -116,73 +116,28 @@ class AudioPlayerScreen extends StatelessWidget {
                                             .changeDurationToSecToSeek(
                                                 v.toInt());
                                         v = v;
-                                      })),
+                                      },
+                                      )
+                              ),
+                              //playerController.position.value == playerController.duration.value  ? nextSong() : null,
                               Text(playerController.duration.value)
                             ],
                           )),
                       const SizedBox(
                         height: 12,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          //TODO: shuffle button
-                          //? previous button
-                          IconButton(
-                            icon:
-                                controlButtonStyle(Icons.skip_previous_rounded),
-                            onPressed: () {
-                              playerController.playSong(
-                                  songList[playerController
-                                              .currentPlayingSongIndex.value -
-                                          1]
-                                      .uri,
-                                  playerController
-                                          .currentPlayingSongIndex.value -
-                                      1);
-                            },
-                          ),
-                          //? play/ pause button
-                          Obx(() => CircleAvatar(
-                                radius: 36,
-                                backgroundColor: const Color(0xff6D1A74),
-                                child: Transform.scale(
-                                  scale: 2.8,
-                                  child: IconButton(
-                                      onPressed: () {
-                                        if (playerController.isPlaying.value) {
-                                          playerController.audioPlayer.pause();
-                                          playerController.isPlaying(false);
-                                        } else {
-                                          playerController.audioPlayer.play();
-                                          playerController.isPlaying(true);
-                                        }
-                                      },
-                                      icon: playerController.isPlaying.value
-                                          ? const Icon(Icons.pause_rounded,
-                                              color: Colors.white)
-                                          : const Icon(
-                                              Icons.play_arrow_rounded,
-                                              color: Colors.white,
-                                            )),
-                                ),
-                              )),
-                          //? next button
-                          IconButton(
-                            icon: controlButtonStyle(Icons.skip_next_rounded),
-                            onPressed: () {
-                              playerController.playSong(
-                                  songList[playerController
-                                              .currentPlayingSongIndex.value +
-                                          1]
-                                      .uri,
-                                  playerController
-                                          .currentPlayingSongIndex.value +
-                                      1);
-                            },
-                          ),
-                          // TODO: Repeat Button
-                        ],
+                      AudioControls(
+                        playerController: playerController,
+                        nextSong: (){
+                          playerController.playSong(
+                              songList[playerController.currentPlayingSongIndex.value + 1].uri,
+                              playerController.currentPlayingSongIndex.value + 1);
+                        },
+                        prevSong: (){
+                          playerController.playSong(
+                              songList[playerController.currentPlayingSongIndex.value - 1].uri,
+                              playerController.currentPlayingSongIndex.value - 1);
+                        },
                       )
                     ],
                   ),
@@ -190,6 +145,80 @@ class AudioPlayerScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class AudioControls extends StatelessWidget {
+  const AudioControls({
+    super.key,
+    required this.playerController, required this.nextSong, required this.prevSong,
+  });
+
+  final PlayerController playerController;
+  final Function nextSong;
+  final Function prevSong;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        //?shuffle
+        IconButton(
+            onPressed: (){
+              debugPrint('shuffle');
+              playerController.audioPlayer.setShuffleModeEnabled(true);
+            },
+            icon: controlButtonStyle(Icons.shuffle)
+        ),
+        //? previous button
+        IconButton(
+          icon:
+              controlButtonStyle(Icons.skip_previous_rounded),
+          onPressed: () {
+            prevSong();
+          },
+        ),
+        //? play/ pause button
+        Obx(() => CircleAvatar(
+              radius: 36,
+              backgroundColor: const Color(0xff6D1A74),
+              child: Transform.scale(
+                scale: 2.8,
+                child: IconButton(
+                    onPressed: () {
+                      if (playerController.isPlaying.value) {
+                        playerController.audioPlayer.pause();
+                        playerController.isPlaying(false);
+                      } else {
+                        playerController.audioPlayer.play();
+                        playerController.isPlaying(true);
+                      }
+                    },
+                    icon: playerController.isPlaying.value
+                        ? const Icon(Icons.pause_rounded,
+                            color: Colors.white)
+                        : const Icon(
+                            Icons.play_arrow_rounded,
+                            color: Colors.white,
+                          )),
+              ),
+            )),
+        //? next button
+        IconButton(
+          icon: controlButtonStyle(Icons.skip_next_rounded),
+          onPressed: () {
+            nextSong();
+          },
+        ),
+
+        //?autoplay/repeat
+        IconButton(
+            onPressed: (){},
+            icon: controlButtonStyle(Icons.repeat)
+        )
+      ],
     );
   }
 }

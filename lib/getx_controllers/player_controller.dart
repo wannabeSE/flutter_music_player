@@ -13,15 +13,30 @@ class PlayerController extends GetxController {
   RxDouble maxDuration = 0.0.obs;
   RxDouble currentSliderVal = 0.0.obs;
 
+  @override
+  onInit()async{
+    await audioPlayer.setLoopMode(LoopMode.all);
+    debugPrint('activated loop');
+    super.onInit();
+  }
   updatePosition(){
     //todo: turn duration info into min:sec
     audioPlayer.durationStream.listen((d){
-      // print('duration -> ${d.toString().split('.')[0]}');
       duration.value = d.toString().split('.')[0];
+      if(duration.value[0] == '0'){
+        duration.value = duration.value.substring(2);
+      }else{
+        duration.value;
+      }
       maxDuration.value = d!.inSeconds.toDouble();
     });
     audioPlayer.positionStream.listen((p){
       position.value = p.toString().split('.')[0];
+      if(position.value[0] == '0'){
+        position.value = position.value.substring(2);
+      }else{
+        position.value;
+      }
       currentSliderVal.value = p.inSeconds.toDouble();
     });
   }
@@ -29,7 +44,6 @@ class PlayerController extends GetxController {
     Duration duration = Duration(seconds: sec);
     audioPlayer.seek(duration);
   }
-
   playSong(String? audioPath, int index){
     currentPlayingSongIndex.value = index;
     try{
