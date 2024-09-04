@@ -41,6 +41,8 @@ dependencies:
   permission_handler: ^11.3.1
   on_audio_query: ^2.9.0
   device_info_plus: ^10.1.2
+  audio_service: ^0.18.15
+  audio_video_progress_bar: ^2.0.3
 
 dev_dependencies:
   flutter_test:

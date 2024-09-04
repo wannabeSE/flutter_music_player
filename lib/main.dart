@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/common/ui_color.dart';
-import 'package:flutter_music_player/screens/test_screen.dart';
+import 'package:flutter_music_player/getx_services/audio_player_getx_service.dart';
+import 'package:flutter_music_player/test_screen/test_music_screen.dart';
 import 'package:get/get.dart';
 
 void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Get.put(AudioPlayerService()).init();
+  await Get.put(AudioPlayerService()).loadSongs();
   runApp(const MyApp());
 }
 
@@ -41,7 +45,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: false,
       ),
-      home: const TestScreen(), //?test splash screen
+      home: const TestMusicScreen(), //?test splash screen
     );
   }
 }
