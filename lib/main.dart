@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/common/ui_color.dart';
 import 'package:flutter_music_player/getx_services/audio_player_getx_service.dart';
-import 'package:flutter_music_player/test_screen/test_music_screen.dart';
+import 'package:flutter_music_player/screens/audio_list/audio_list_screen.dart';
 import 'package:get/get.dart';
 
 void main() async{
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: false,
       ),
-      home: const TestMusicScreen(), //?test splash screen
+      home: const AudioListScreen(), //?test splash screen
     );
   }
 }
