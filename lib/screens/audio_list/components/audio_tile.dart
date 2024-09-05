@@ -28,7 +28,7 @@ class AudioTile extends StatelessWidget {
             if(itemSnapshot.data! != item){
               audioHandler.skipToQueueItem(index);
             }
-            Get.to(AudioPlayerScreen(audioHandler: audioHandler, item: item));
+            Get.to(AudioPlayerScreen(audioHandler: audioHandler,));
           },
         );
       }
