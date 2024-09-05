@@ -19,9 +19,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        appBarTheme: const AppBarTheme(
+        appBarTheme: AppBarTheme(
           elevation: 0,
-          backgroundColor: Colors.transparent
+          backgroundColor: TColor.primary.withOpacity(0.7)
         ),
         fontFamily: 'Poppins',
         scaffoldBackgroundColor: Colors.transparent,

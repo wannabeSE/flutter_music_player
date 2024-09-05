@@ -1,7 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_music_player/services/song_model_to_media_item.dart';
-import 'package:flutter_music_player/services/test_permission_handler.dart';
+import 'package:flutter_music_player/services/permission_handler.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 

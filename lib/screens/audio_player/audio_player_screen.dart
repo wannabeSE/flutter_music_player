@@ -1,9 +1,10 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/common/ui_color.dart';
+import 'package:flutter_music_player/common/ui_components.dart';
 import 'package:flutter_music_player/screens/audio_player/components/audio_controls.dart';
 import 'package:flutter_music_player/services/audio_player_handler.dart';
-import 'package:flutter_music_player/screens/audio_player/components/test_progress.dart';
+import 'package:flutter_music_player/screens/audio_player/components/audio_progress_bar.dart';
 import 'package:get/get.dart';
 
 class AudioPlayerScreen extends StatelessWidget {
@@ -17,7 +18,7 @@ class AudioPlayerScreen extends StatelessWidget {
     return Container(
       decoration: TColor.gradientBg,
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: Components.appbar,
         body: StreamBuilder<MediaItem?>(
           stream: audioHandler.mediaItem,
           builder: (context, mediaSnapshot){
@@ -31,8 +32,9 @@ class AudioPlayerScreen extends StatelessWidget {
                     color: Colors.amberAccent,
                   ),
                   Text(item.title),
+                  //Progress Bar
                   TestProgressBar(item: item, audioHandler: audioHandler,),
-                  //Controls
+                  //Audio Controls
                   AudioControls(audioHandler: audioHandler,)
                 ],
               );

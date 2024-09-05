@@ -16,14 +16,14 @@ class AudioControls extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               IconButton(
-                  onPressed: () {
-                    audioHandler.skipToPrevious();
-                  },
-                  icon: Icon(
-                    Icons.skip_previous_rounded,
-                    size: 40,
-                    color: TColor.primary,
-                  )
+                onPressed: () {
+                  audioHandler.skipToPrevious();
+                },
+                icon: Icon(
+                  Icons.skip_previous_rounded,
+                  size: 40,
+                  color: TColor.primary,
+                )
               ),
               CircleAvatar(
                 maxRadius: 32,
@@ -31,28 +31,28 @@ class AudioControls extends StatelessWidget {
                 child: Transform.scale(
                   scale: 2.5,
                   child: IconButton(
-                      onPressed: () {
-                        if(playing){
-                          audioHandler.pause();
-                        }else {
-                          audioHandler.play();
-                        }
-                      },
-                      icon: playing
-                          ? const Icon(Icons.pause_rounded)
-                          : const Icon(Icons.play_arrow_rounded)
+                    onPressed: () {
+                      if(playing){
+                        audioHandler.pause();
+                      }else {
+                        audioHandler.play();
+                      }
+                    },
+                    icon: playing
+                        ? const Icon(Icons.pause_rounded)
+                        : const Icon(Icons.play_arrow_rounded)
                   ),
                 ),
               ),
               IconButton(
-                  onPressed: () {
-                    audioHandler.skipToNext();
-                  },
-                  icon: Icon(
-                    Icons.skip_next_rounded,
-                    color: TColor.primary,
-                    size: 40,
-                  )
+                onPressed: () {
+                  audioHandler.skipToNext();
+                },
+                icon: Icon(
+                  Icons.skip_next_rounded,
+                  color: TColor.primary,
+                  size: 40,
+                )
               ),
             ],
           );

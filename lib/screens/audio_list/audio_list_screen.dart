@@ -1,9 +1,9 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/common/ui_color.dart';
+import 'package:flutter_music_player/common/ui_components.dart';
 import 'package:flutter_music_player/getx_services/audio_player_getx_service.dart';
 import 'package:get/get.dart';
-
 import 'components/audio_tile.dart';
 
 class AudioListScreen extends StatelessWidget {
@@ -15,7 +15,7 @@ class AudioListScreen extends StatelessWidget {
     return Container(
       decoration: TColor.gradientBg,
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: Components.appbar,
         body: ListView.builder(
           physics: const BouncingScrollPhysics(),
           itemCount: songList.length,
