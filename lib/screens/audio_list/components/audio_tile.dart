@@ -4,6 +4,8 @@ import 'package:flutter_music_player/common/ui_color.dart';
 import 'package:flutter_music_player/services/audio_player_handler.dart';
 import 'package:flutter_music_player/screens/audio_player/audio_player_screen.dart';
 import 'package:get/get.dart';
+import 'package:on_audio_query/on_audio_query.dart';
+
 class AudioTile extends StatelessWidget {
   const AudioTile({
     super.key,
@@ -22,6 +24,16 @@ class AudioTile extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: ListTile(
+            leading: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16)
+              ),
+              child: QueryArtworkWidget(
+                id: item.extras?['song_id'], 
+                type: ArtworkType.AUDIO,
+                nullArtworkWidget: const Icon(Icons.music_note, color: Colors.white,),
+              ),
+            ),
             title: Text(
               item.title,
               maxLines: 1,
