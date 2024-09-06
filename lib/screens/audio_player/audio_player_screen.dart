@@ -33,18 +33,45 @@ class AudioPlayerScreen extends StatelessWidget {
                     child: QueryArtworkWidget(
                       id: item.extras?['song_id'],
                       type: ArtworkType.AUDIO,
-                      nullArtworkWidget: const Icon(Icons.music_note, color: Colors.white,),
+                      nullArtworkWidget: Icon(
+                        Icons.music_note_rounded,
+                        color: Colors.white,
+                        size: Get.height * 0.3,
+                      ),
                     ),
                   ),
                   // Audio Information
-                  Text(item.title),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4.0),
+                    child: Text(
+                      item.title,
+                      maxLines: 1,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16,
+                        overflow: TextOverflow.ellipsis,
+
+                      ),
+                    ),
+                  ),
+                  Text(
+                    item.artist ?? 'unknown artist',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey
+                    ),
+                  ),
                   //Progress Bar
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
                     child: AudioProgressBar(item: item, audioHandler: audioHandler,),
                   ),
                   //Audio Controls
-                  AudioControls(audioHandler: audioHandler,)
+                  Expanded(
+                    child: AudioControls(
+                      audioHandler: audioHandler,
+                    )
+                  )
                 ],
               );
             }

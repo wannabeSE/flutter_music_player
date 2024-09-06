@@ -1,16 +1,23 @@
 # flutter_music_player
 
-A new Flutter project.
+A new Flutter project that can play from device storage with 
+ - active autoplay
+ - background play
+ - notification bar and lock screen control
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+git clone [project link]
+flutter pub get
+flutter run
 
-A few resources to get you started if this is your first Flutter project:
+## Current phase
+# Audio list screen
+    https://res.cloudinary.com/dcmgtfqoi/image/upload/v1725646506/Screenshot_20240907_000114_rgulg8.png
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+# Audio player lock screen
+    https://res.cloudinary.com/dcmgtfqoi/image/upload/v1725646487/lock_screen_hablqw.png
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Audio player screen 
+    https://res.cloudinary.com/dcmgtfqoi/image/upload/v1725646502/audio_screen_yyvy1w.png
+
