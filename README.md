@@ -13,11 +13,11 @@ flutter run
 
 ## Current phase
 # Audio list screen
-https://res.cloudinary.com/dcmgtfqoi/image/upload/v1725646506/Screenshot_20240907_000114_rgulg8.png
+![list screen](https://res.cloudinary.com/dcmgtfqoi/image/upload/v1725646506/Screenshot_20240907_000114_rgulg8.png)
 
 # Audio player lock screen
-https://res.cloudinary.com/dcmgtfqoi/image/upload/v1725646487/lock_screen_hablqw.png
+![lock screen view](https://res.cloudinary.com/dcmgtfqoi/image/upload/v1725646487/lock_screen_hablqw.png)
 
 # Audio player screen 
-https://res.cloudinary.com/dcmgtfqoi/image/upload/v1725646502/audio_screen_yyvy1w.png
+![player view](https://res.cloudinary.com/dcmgtfqoi/image/upload/v1725646502/audio_screen_yyvy1w.png)
 
