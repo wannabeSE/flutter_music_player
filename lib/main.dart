@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/common/ui_color.dart';
+import 'package:flutter_music_player/components/bottom_navbar.dart';
 import 'package:flutter_music_player/getx_services/audio_player_getx_service.dart';
-import 'package:flutter_music_player/screens/audio_list/audio_list_screen.dart';
 import 'package:get/get.dart';
 
 void main() async{
@@ -19,9 +19,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           elevation: 0,
-          backgroundColor: TColor.primary.withOpacity(0.7)
+          backgroundColor: Colors.transparent
         ),
         fontFamily: 'Poppins',
         scaffoldBackgroundColor: Colors.transparent,
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: false,
       ),
-      home: const AudioListScreen(), //?test splash screen
+      home: const BottomNavbar(), //?test splash screen
     );
   }
 }

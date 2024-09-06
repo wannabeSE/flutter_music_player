@@ -6,6 +6,7 @@ import 'package:flutter_music_player/screens/audio_player/components/audio_contr
 import 'package:flutter_music_player/services/audio_player_handler.dart';
 import 'package:flutter_music_player/screens/audio_player/components/audio_progress_bar.dart';
 import 'package:get/get.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 
 class AudioPlayerScreen extends StatelessWidget {
   const AudioPlayerScreen ({
@@ -26,14 +27,22 @@ class AudioPlayerScreen extends StatelessWidget {
               MediaItem item = mediaSnapshot.data!;
               return Column(
                 children: [
-                  Container(
+                  SizedBox(
                     height: Get.height * 0.4,
                     width: Get.width * 0.8,
-                    color: Colors.amberAccent,
+                    child: QueryArtworkWidget(
+                      id: item.extras?['song_id'],
+                      type: ArtworkType.AUDIO,
+                      nullArtworkWidget: const Icon(Icons.music_note, color: Colors.white,),
+                    ),
                   ),
+                  // Audio Information
                   Text(item.title),
                   //Progress Bar
-                  TestProgressBar(item: item, audioHandler: audioHandler,),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+                    child: AudioProgressBar(item: item, audioHandler: audioHandler,),
+                  ),
                   //Audio Controls
                   AudioControls(audioHandler: audioHandler,)
                 ],

@@ -39,8 +39,8 @@ class AudioControls extends StatelessWidget {
                       }
                     },
                     icon: playing
-                        ? const Icon(Icons.pause_rounded)
-                        : const Icon(Icons.play_arrow_rounded)
+                        ? const Icon(Icons.pause_rounded, color: Colors.white,)
+                        : const Icon(Icons.play_arrow_rounded), color: Colors.white,
                   ),
                 ),
               ),

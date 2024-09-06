@@ -5,7 +5,7 @@ class Components{
   static AppBar get appbar => AppBar(
     leading: IconButton(
         onPressed: (){
-          Get.back();
+          Get.back(closeOverlays: true);
         },
         icon: SvgPicture.asset(
           'assets/icons/left_arrow.svg',
