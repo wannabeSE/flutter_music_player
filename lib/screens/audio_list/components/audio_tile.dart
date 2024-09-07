@@ -7,7 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-class AudioTile extends StatelessWidget {
+class AudioTile extends StatefulWidget {
   const AudioTile({
     super.key,
     required this.item,
@@ -17,10 +17,17 @@ class AudioTile extends StatelessWidget {
   final JustAudioPlayerHandler audioHandler;
   final MediaItem item;
   final int index;
+
+  @override
+  State<AudioTile> createState() => _AudioTileState();
+}
+
+class _AudioTileState extends State<AudioTile> {
   @override
   Widget build(BuildContext context) {
+    debugPrint('tile rebuild');
     return StreamBuilder(
-      stream: audioHandler.mediaItem,
+      stream: widget.audioHandler.mediaItem,
       builder: (_, itemSnapshot){
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -29,7 +36,7 @@ class AudioTile extends StatelessWidget {
               height: 44,
               width: 44,
               child: QueryArtworkWidget(
-                id: item.extras?['song_id'],
+                id: widget.item.extras?['song_id'],
                 type: ArtworkType.AUDIO,
                 nullArtworkWidget: const Icon(Icons.music_note, color: Colors.white,),
               ),
@@ -37,7 +44,7 @@ class AudioTile extends StatelessWidget {
             title: SizedBox(
               width: Get.width * 0.3,
               child: Text(
-                item.title,
+                widget.item.title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
@@ -47,7 +54,7 @@ class AudioTile extends StatelessWidget {
               ),
             ),
             subtitle: Text(
-              item.artist ?? 'unknown artist',
+              widget.item.artist ?? 'unknown artist',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
@@ -57,11 +64,16 @@ class AudioTile extends StatelessWidget {
             trailing: Padding(
               padding: const EdgeInsets.only(right: 8),
               child: IconButton(
-                onPressed: (){},
-                icon: SvgPicture.asset(
-                  'assets/icons/favorite.svg',
-                  colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                ),
+                onPressed: (){
+                  widget.item.extras?['isFav'] = !widget.item.extras?['isFav'];
+                  //? might convert to stateless widget
+                  setState(() {
+
+                  });
+                },
+                icon: widget.item.extras?['isFav'] ?? false
+                  ? _favIcon('assets/icons/fav_filled.svg')
+                  : _favIcon('assets/icons/favorite.svg')
               ),
             ),
             shape: Border(
@@ -71,11 +83,11 @@ class AudioTile extends StatelessWidget {
             ),
             contentPadding: EdgeInsets.zero,
             onTap: (){
-              if(itemSnapshot.data! != item){
-                audioHandler.skipToQueueItem(index);
+              if(itemSnapshot.data! != widget.item){
+                widget.audioHandler.skipToQueueItem(widget.index);
               }
               Get.to(
-                  AudioPlayerScreen(audioHandler: audioHandler,),
+                  AudioPlayerScreen(audioHandler: widget.audioHandler,),
                 transition: Transition.rightToLeft,
                 duration: const Duration(milliseconds: 250)
               );
@@ -83,6 +95,13 @@ class AudioTile extends StatelessWidget {
           ),
         );
       }
+    );
+  }
+
+  Widget _favIcon(String iconPath){
+    return SvgPicture.asset(
+      iconPath,
+      colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn)
     );
   }
 }

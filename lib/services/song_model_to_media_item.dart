@@ -6,12 +6,13 @@ final OnAudioQuery onAudioQuery = OnAudioQuery();
 
 Future<MediaItem> songModelToMediaItem(SongModel song)async{
   try{
+
     return MediaItem(
-        id: song.uri.toString(),
-        title: song.displayNameWOExt,
-        artist: song.artist,
-        extras: {'song_id': song.id},
-        duration: Duration(milliseconds: song.duration!)
+      id: song.uri.toString(),
+      title: song.displayNameWOExt,
+      artist: song.artist,
+      extras: {'song_id': song.id, 'isFav': false},
+      duration: Duration(milliseconds: song.duration!)
     );
   }catch(e){
     debugPrint('Error converting SongModel to MediaItem');

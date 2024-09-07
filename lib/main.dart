@@ -33,11 +33,11 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
             seedColor: TColor.primary
         ),
-        navigationBarTheme: const NavigationBarThemeData(
+        navigationBarTheme: NavigationBarThemeData(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          indicatorColor: Color(0xff632568),
-          labelTextStyle: WidgetStatePropertyAll(TextStyle(
+          indicatorColor: TColor.primary,
+          labelTextStyle: const WidgetStatePropertyAll(TextStyle(
             fontFamily: 'Poppins',
             color: Colors.white
             )

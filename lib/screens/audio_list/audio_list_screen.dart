@@ -10,6 +10,7 @@ class AudioListScreen extends StatelessWidget {
   const AudioListScreen({super.key});
   @override
   Widget build(BuildContext context) {
+    debugPrint('rebuild');
     final AudioPlayerService audioPlayerService = Get.find<AudioPlayerService>();
     final songList = audioPlayerService.songController.deviceSongs;
     return Container(

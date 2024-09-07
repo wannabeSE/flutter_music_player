@@ -1,11 +1,6 @@
-import 'dart:io';
-
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/common/ui_color.dart';
-import 'package:flutter_music_player/components/bottom_navbar.dart';
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class TestScreen extends StatelessWidget {
   const TestScreen({super.key});
@@ -13,32 +8,32 @@ class TestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    checkPermission(PermissionStatus status)async{
-      if(status.isDenied){
-        debugPrint('denied');
-        await Permission.audio.request();
-      }else if(status.isGranted){
-        debugPrint('Granted');
-        Get.to(const BottomNavbar());
-      }else{
-        openAppSettings();
-      }
-    }
-    Future requestPermission()async{
-      final androidInfo = await DeviceInfoPlugin().androidInfo;
-      if(Platform.isAndroid){
-        //? for android version 12 or below
-        if(androidInfo.version.sdkInt <= 31){
-          PermissionStatus permStat = await Permission.storage.request();
-          checkPermission(permStat);
-        }
-        //? for android version 13 or greater
-        else{
-          PermissionStatus permissionStatus = await Permission.audio.request();
-          checkPermission(permissionStatus);
-        }
-      }
-    }
+    // checkPermission(PermissionStatus status)async{
+    //   if(status.isDenied){
+    //     debugPrint('denied');
+    //     await Permission.audio.request();
+    //   }else if(status.isGranted){
+    //     debugPrint('Granted');
+    //     Get.to(const BottomNavbar());
+    //   }else{
+    //     openAppSettings();
+    //   }
+    // }
+    // Future requestPermission()async{
+    //   final androidInfo = await DeviceInfoPlugin().androidInfo;
+    //   if(Platform.isAndroid){
+    //     //? for android version 12 or below
+    //     if(androidInfo.version.sdkInt <= 31){
+    //       PermissionStatus permStat = await Permission.storage.request();
+    //       checkPermission(permStat);
+    //     }
+    //     //? for android version 13 or greater
+    //     else{
+    //       PermissionStatus permissionStatus = await Permission.audio.request();
+    //       checkPermission(permissionStatus);
+    //     }
+    //   }
+    // }
     return Container(
       decoration: TColor.gradientBg,
       child: Scaffold(
@@ -73,7 +68,7 @@ class TestScreen extends StatelessWidget {
             const SizedBox(height: 10,),
             TextButton(
                 onPressed: ()async{
-                  await requestPermission();
+                  //await requestPermission();
                 },
                 child: const Text(
                   'Device files only',

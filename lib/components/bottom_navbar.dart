@@ -3,9 +3,9 @@ import 'package:flutter_music_player/screens/audio_list/audio_list_screen.dart';
 import 'package:get/get.dart';
 import '../screens/home/home.dart';
 import 'package:flutter_svg/svg.dart';
+
 class BottomNavbar extends StatelessWidget {
   const BottomNavbar({super.key});
-
   @override
   Widget build(BuildContext context) {
     NavigationController navController = Get.put(NavigationController());
@@ -32,10 +32,11 @@ class BottomNavbar extends StatelessWidget {
                   colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                   height: iconHeight,
                 ),
-                label: 'Music',),
+                label: 'Music',
+              ),
               NavigationDestination(
                 icon: SvgPicture.asset(
-                  'assets/icons/library.svg',
+                  'assets/icons/audio_lib.svg',
                   colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                   height: iconHeight,
                 ),
@@ -43,13 +44,14 @@ class BottomNavbar extends StatelessWidget {
               ),
               NavigationDestination(
                 icon: SvgPicture.asset(
-                  'assets/icons/favorite.svg',
+                  'assets/icons/user.svg',
                   colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                   height: iconHeight,
                 ),
-                label: 'Favorite'
+                label: 'Profile'
             ),
-          ]),
+          ]
+        ),
       ),
     );
   }
