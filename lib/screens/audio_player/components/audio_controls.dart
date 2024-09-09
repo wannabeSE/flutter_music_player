@@ -68,8 +68,16 @@ class AudioControls extends StatelessWidget {
                           ),
                         ),
                         IconButton(
-                          onPressed: () {
-                            audioHandler.skipToPrevious();
+                          onPressed: () async{
+
+                            if(controller.repeatMode.value == AudioServiceRepeatMode.one){
+                              await audioHandler.setRepeatMode(AudioServiceRepeatMode.none);
+                              audioHandler.skipToPrevious();
+                              await audioHandler.setRepeatMode(AudioServiceRepeatMode.one);
+                            }else{
+                              audioHandler.skipToPrevious();
+                            }
+
                           },
                           icon: _controlButtonStyle(Icons.skip_previous_rounded, 40)
                         ),
@@ -93,8 +101,16 @@ class AudioControls extends StatelessWidget {
                           ),
                         ),
                         IconButton(
-                          onPressed: () {
-                            audioHandler.skipToNext();
+                          onPressed: () async{
+
+                            if(controller.repeatMode.value == AudioServiceRepeatMode.one){
+                              await audioHandler.setRepeatMode(AudioServiceRepeatMode.none);
+                              audioHandler.skipToNext();
+                              await audioHandler.setRepeatMode(AudioServiceRepeatMode.one);
+                            }else{
+                              audioHandler.skipToNext();
+                            }
+
                           },
                           icon: _controlButtonStyle(Icons.skip_next_rounded, 40)
                         ),
