@@ -2,14 +2,19 @@ import 'dart:ui';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/common/ui_color.dart';
+import 'package:flutter_music_player/getx_controllers/audio_control_controller.dart';
 import 'package:flutter_music_player/services/audio_player_handler.dart';
 import 'package:get/get.dart';
 
 class AudioControls extends StatelessWidget {
-  const AudioControls({super.key, required this.audioHandler});
+  const AudioControls({
+    super.key,
+    required this.audioHandler
+  });
   final JustAudioPlayerHandler audioHandler;
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(AudioControlController());
     return StreamBuilder<PlaybackState>(
       stream: audioHandler.playbackState.stream,
       builder: (_, snapshot) {
@@ -36,8 +41,8 @@ class AudioControls extends StatelessWidget {
                     height: double.infinity,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
                         colors: [
                           Colors.white.withOpacity(0.3),
                           Colors.white.withOpacity(0.1)
@@ -46,17 +51,27 @@ class AudioControls extends StatelessWidget {
                     ),
                     // audio control buttons
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: IconButton(
+                            onPressed: (){
+                              controller.shuffleMode.value = !controller.shuffleMode.value;
+                              controller.toggleShuffleMode(audioHandler);
+                            },
+                            icon: Obx(() =>
+                              controller.shuffleMode.value
+                                  ? _controlButtonStyle(Icons.shuffle_on_rounded, 28)
+                                  : _controlButtonStyle(Icons.shuffle_rounded, 28)
+                            )
+                          ),
+                        ),
                         IconButton(
                           onPressed: () {
                             audioHandler.skipToPrevious();
                           },
-                          icon: Icon(
-                            Icons.skip_previous_rounded,
-                            size: 40,
-                            color: TColor.primary,
-                          )
+                          icon: _controlButtonStyle(Icons.skip_previous_rounded, 40)
                         ),
                         CircleAvatar(
                           maxRadius: 48,
@@ -81,10 +96,17 @@ class AudioControls extends StatelessWidget {
                           onPressed: () {
                             audioHandler.skipToNext();
                           },
-                          icon: Icon(
-                            Icons.skip_next_rounded,
-                            color: TColor.primary,
-                            size: 40,
+                          icon: _controlButtonStyle(Icons.skip_next_rounded, 40)
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: IconButton(
+                            onPressed: ()async{
+                              await controller.toggleRepeatMode(audioHandler);
+                            },
+                            icon: Obx(() =>
+                              _controlButtonStyle(controller.getRepeatModeIcon(), 28)
+                            )
                           )
                         ),
                       ],
@@ -97,6 +119,13 @@ class AudioControls extends StatelessWidget {
         }
         return const SizedBox.shrink();
       }
+    );
+  }
+  Widget _controlButtonStyle(IconData iconData, double iconSize){
+    return Icon(
+      iconData,
+      size: iconSize,
+      color: TColor.primary,
     );
   }
 }

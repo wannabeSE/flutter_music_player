@@ -1,10 +1,10 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/common/ui_color.dart';
-import 'package:flutter_music_player/common/ui_components.dart';
 import 'package:flutter_music_player/screens/audio_player/components/audio_controls.dart';
 import 'package:flutter_music_player/services/audio_player_handler.dart';
 import 'package:flutter_music_player/screens/audio_player/components/audio_progress_bar.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
@@ -19,7 +19,19 @@ class AudioPlayerScreen extends StatelessWidget {
     return Container(
       decoration: TColor.gradientBg,
       child: Scaffold(
-        appBar: Components.appbar,
+        appBar: AppBar(
+          leading: IconButton(
+              onPressed: ()async{
+                await audioHandler.setRepeatMode(AudioServiceRepeatMode.none);
+                await audioHandler.setShuffleMode(AudioServiceShuffleMode.none);
+                Get.back();
+              },
+              icon: SvgPicture.asset(
+                'assets/icons/left_arrow.svg',
+                colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+              )
+          ),
+        ),
         body: StreamBuilder<MediaItem?>(
           stream: audioHandler.mediaItem,
           builder: (context, mediaSnapshot){
@@ -50,7 +62,6 @@ class AudioPlayerScreen extends StatelessWidget {
                         fontWeight: FontWeight.w800,
                         fontSize: 16,
                         overflow: TextOverflow.ellipsis,
-
                       ),
                     ),
                   ),

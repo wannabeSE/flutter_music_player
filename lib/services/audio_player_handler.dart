@@ -83,4 +83,28 @@ class JustAudioPlayerHandler extends BaseAudioHandler with QueueHandler, SeekHan
     play();
   }
 
+  @override
+  Future<void> setShuffleMode(AudioServiceShuffleMode shuffleMode)async{
+
+    if(shuffleMode == AudioServiceShuffleMode.all){
+      audioPlayer.setShuffleModeEnabled(true);
+    }else{
+      audioPlayer.setShuffleModeEnabled(false);
+    }
+
+  }
+
+  @override
+  Future<void> setRepeatMode(AudioServiceRepeatMode repeatMode) async{
+
+    if(repeatMode == AudioServiceRepeatMode.one){
+      await audioPlayer.setLoopMode(LoopMode.one);
+    }else if(repeatMode == AudioServiceRepeatMode.all){
+      await audioPlayer.setLoopMode(LoopMode.all);
+    }else{
+      await audioPlayer.setLoopMode(LoopMode.off);
+    }
+
+  }
+
 }

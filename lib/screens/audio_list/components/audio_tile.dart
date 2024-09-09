@@ -7,7 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-class AudioTile extends StatefulWidget {
+class AudioTile extends StatelessWidget {
   const AudioTile({
     super.key,
     required this.item,
@@ -19,15 +19,10 @@ class AudioTile extends StatefulWidget {
   final int index;
 
   @override
-  State<AudioTile> createState() => _AudioTileState();
-}
-
-class _AudioTileState extends State<AudioTile> {
-  @override
   Widget build(BuildContext context) {
     debugPrint('tile rebuild');
     return StreamBuilder(
-      stream: widget.audioHandler.mediaItem,
+      stream: audioHandler.mediaItem,
       builder: (_, itemSnapshot){
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -36,7 +31,7 @@ class _AudioTileState extends State<AudioTile> {
               height: 44,
               width: 44,
               child: QueryArtworkWidget(
-                id: widget.item.extras?['song_id'],
+                id: item.extras?['song_id'],
                 type: ArtworkType.AUDIO,
                 nullArtworkWidget: const Icon(Icons.music_note, color: Colors.white,),
               ),
@@ -44,7 +39,7 @@ class _AudioTileState extends State<AudioTile> {
             title: SizedBox(
               width: Get.width * 0.3,
               child: Text(
-                widget.item.title,
+                item.title,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
@@ -54,7 +49,7 @@ class _AudioTileState extends State<AudioTile> {
               ),
             ),
             subtitle: Text(
-              widget.item.artist ?? 'unknown artist',
+              item.artist ?? 'unknown artist',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
@@ -63,18 +58,7 @@ class _AudioTileState extends State<AudioTile> {
             ),
             trailing: Padding(
               padding: const EdgeInsets.only(right: 8),
-              child: IconButton(
-                onPressed: (){
-                  widget.item.extras?['isFav'] = !widget.item.extras?['isFav'];
-                  //? might convert to stateless widget
-                  setState(() {
-
-                  });
-                },
-                icon: widget.item.extras?['isFav'] ?? false
-                  ? _favIcon('assets/icons/fav_filled.svg')
-                  : _favIcon('assets/icons/favorite.svg')
-              ),
+              child: FavButton(item: item),
             ),
             shape: Border(
               bottom: BorderSide(
@@ -83,11 +67,11 @@ class _AudioTileState extends State<AudioTile> {
             ),
             contentPadding: EdgeInsets.zero,
             onTap: (){
-              if(itemSnapshot.data! != widget.item){
-                widget.audioHandler.skipToQueueItem(widget.index);
+              if(itemSnapshot.data! != item){
+                audioHandler.skipToQueueItem(index);
               }
               Get.to(
-                  AudioPlayerScreen(audioHandler: widget.audioHandler,),
+                  AudioPlayerScreen(audioHandler: audioHandler,),
                 transition: Transition.rightToLeft,
                 duration: const Duration(milliseconds: 250)
               );
@@ -97,7 +81,30 @@ class _AudioTileState extends State<AudioTile> {
       }
     );
   }
+}
 
+class FavButton extends StatefulWidget {
+  const FavButton({super.key, required this.item});
+  final MediaItem item;
+
+  @override
+  State<FavButton> createState() => _FavButtonState();
+}
+
+class _FavButtonState extends State<FavButton> {
+  @override
+  Widget build(BuildContext context) {
+    debugPrint('icon rebuild');
+    return IconButton(
+      onPressed: (){
+        widget.item.extras?['isFav'] = !widget.item.extras?['isFav'];
+        setState(() {});
+      }, 
+      icon: widget.item.extras?['isFav'] ?? false 
+          ? _favIcon('assets/icons/fav_filled.svg')
+          : _favIcon('assets/icons/favorite.svg')
+    );
+  }
   Widget _favIcon(String iconPath){
     return SvgPicture.asset(
       iconPath,
