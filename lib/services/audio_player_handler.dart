@@ -4,7 +4,7 @@ import 'package:just_audio/just_audio.dart';
 
 class JustAudioPlayerHandler extends BaseAudioHandler with QueueHandler, SeekHandler{
   final AudioPlayer audioPlayer = AudioPlayer();
-
+  List<AudioSource> audioSources = [];
 
   UriAudioSource _createAudioSource(MediaItem song){
     return ProgressiveAudioSource(Uri.parse(song.id));
@@ -44,25 +44,46 @@ class JustAudioPlayerHandler extends BaseAudioHandler with QueueHandler, SeekHan
       queueIndex: event.currentIndex,
     ));
   }
-
+  //? creating playlist with device's local storage song
   Future initSongs(List<MediaItem> songs)async{
     audioPlayer.playbackEventStream.listen(_broadcastState);
     //? creating list of audio sources from the provided songs
-    final audioSources = songs.map((song) => _createAudioSource(song)).toList();
+    audioSources = songs.map((song) => _createAudioSource(song)).toList();
+
     await audioPlayer
         .setAudioSource(
         ConcatenatingAudioSource(children: audioSources)
     );
-
+    //print('audio sources ====>\n$audioSources');
     queue.value.clear();
     queue.value.addAll(songs);
     queue.add(queue.value);
-
+    //print('Queue from init => ${queue.value}');
     _listenForCurrentSongIndexChanges();
 
     audioPlayer.processingStateStream.listen((state){
       if(state == ProcessingState.completed) skipToNext();
     });
+  }
+
+  // Future initPlaylist(List<MediaItem> songs)async{
+  //   audioPlayer.playbackEventStream.listen(_broadcastState);
+  //   final playlistSource = songs.map((song) => _createAudioSource(song)).toList();
+  //   await audioPlayer.setAudioSource(ConcatenatingAudioSource(children: playlistSource));
+  //   // print('intiPlaylist Queue ${queue.value}');
+  //   queue.value.clear();
+  //   queue.value.addAll(songs);
+  //   queue.add(queue.value);
+  //
+  //   _listenForCurrentSongIndexChanges();
+  //
+  //   audioPlayer.processingStateStream.listen((state){
+  //     if(state == ProcessingState.completed) skipToNext();
+  //   });
+  // }
+  Future<void> switchPlaylist(List<MediaItem> songs)async{
+    await audioPlayer.stop();
+    await initSongs(songs);
   }
   @override
   Future<void> play() => audioPlayer.play();
@@ -81,6 +102,16 @@ class JustAudioPlayerHandler extends BaseAudioHandler with QueueHandler, SeekHan
   Future<void> skipToQueueItem(int index)async{
     await audioPlayer.seek(Duration.zero, index: index);
     play();
+  }
+
+  // @override
+  // Future<void> removeQueueItemAt(int index)async{
+  //   audioSources.removeAt(index);
+  // }
+
+  @override
+  Future<void> updateQueue(List<MediaItem> newQueue)async{
+    await initSongs(newQueue);
   }
 
   @override

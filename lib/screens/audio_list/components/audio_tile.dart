@@ -1,6 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/common/ui_color.dart';
+import 'package:flutter_music_player/getx_controllers/liked_songs_controller.dart';
 import 'package:flutter_music_player/services/audio_player_handler.dart';
 import 'package:flutter_music_player/screens/audio_player/audio_player_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,7 +21,8 @@ class AudioTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('tile rebuild');
+    //debugPrint(index.toString());
+    final LikedSongsController likedSongsController = Get.find();
     return StreamBuilder(
       stream: audioHandler.mediaItem,
       builder: (_, itemSnapshot){
@@ -58,7 +60,11 @@ class AudioTile extends StatelessWidget {
             ),
             trailing: Padding(
               padding: const EdgeInsets.only(right: 8),
-              child: FavButton(item: item),
+              child: FavButton(
+                item: item, 
+                likedSongsController: likedSongsController,
+                audioPlayerHandler: audioHandler,
+              ),
             ),
             shape: Border(
               bottom: BorderSide(
@@ -66,12 +72,16 @@ class AudioTile extends StatelessWidget {
               )
             ),
             contentPadding: EdgeInsets.zero,
-            onTap: (){
-              if(itemSnapshot.data! != item){
-                audioHandler.skipToQueueItem(index);
-              }
+            onTap: ()async{
+              //? play/pause logic needs to be implemented
+              await audioHandler.skipToQueueItem(index);
+              //! autoplay issue if the item index = 0
+              // if(itemSnapshot.data! != item){
+              //   //print('index from audio tile =$index');
+              //   await audioHandler.skipToQueueItem(index);
+              // }
               Get.to(
-                  AudioPlayerScreen(audioHandler: audioHandler,),
+                AudioPlayerScreen(audioHandler: audioHandler,),
                 transition: Transition.rightToLeft,
                 duration: const Duration(milliseconds: 250)
               );
@@ -84,9 +94,15 @@ class AudioTile extends StatelessWidget {
 }
 
 class FavButton extends StatefulWidget {
-  const FavButton({super.key, required this.item});
+  const FavButton({
+    super.key,
+    required this.item,
+    required this.likedSongsController, 
+    required this.audioPlayerHandler,
+  });
   final MediaItem item;
-
+  final LikedSongsController likedSongsController;
+  final JustAudioPlayerHandler audioPlayerHandler;
   @override
   State<FavButton> createState() => _FavButtonState();
 }
@@ -94,10 +110,10 @@ class FavButton extends StatefulWidget {
 class _FavButtonState extends State<FavButton> {
   @override
   Widget build(BuildContext context) {
-    debugPrint('icon rebuild');
+    //debugPrint('icon rebuild');
     return IconButton(
-      onPressed: (){
-        widget.item.extras?['isFav'] = !widget.item.extras?['isFav'];
+      onPressed: ()async{
+        await toggleLike();
         setState(() {});
       }, 
       icon: widget.item.extras?['isFav'] ?? false 
@@ -111,4 +127,11 @@ class _FavButtonState extends State<FavButton> {
       colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn)
     );
   }
+
+  Future toggleLike() async{
+    widget.item.extras?['isFav'] = !widget.item.extras?['isFav'];
+    await widget.likedSongsController.toggleLike(widget.item);
+    await widget.audioPlayerHandler.updateQueue(widget.likedSongsController.likedSongs);
+  }
+
 }

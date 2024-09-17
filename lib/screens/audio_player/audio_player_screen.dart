@@ -39,16 +39,22 @@ class AudioPlayerScreen extends StatelessWidget {
               MediaItem item = mediaSnapshot.data!;
               return Column(
                 children: [
-                  SizedBox(
-                    height: Get.height * 0.4,
-                    width: Get.width * 0.8,
-                    child: QueryArtworkWidget(
-                      id: item.extras?['song_id'],
-                      type: ArtworkType.AUDIO,
-                      nullArtworkWidget: Icon(
-                        Icons.music_note_rounded,
-                        color: Colors.white,
-                        size: Get.height * 0.3,
+                  Expanded(
+                    child: Container(
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child: QueryArtworkWidget(
+                        id: item.extras?['song_id'],
+                        type: ArtworkType.AUDIO,
+                        artworkWidth: double.infinity,
+                        artworkHeight: double.infinity,
+                        nullArtworkWidget: Icon(
+                          Icons.music_note_rounded,
+                          color: Colors.white,
+                          size: Get.height * 0.3,
+                        ),
                       ),
                     ),
                   ),

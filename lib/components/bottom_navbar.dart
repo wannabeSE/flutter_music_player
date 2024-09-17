@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_music_player/screens/audio_library/library_list_screen.dart';
 import 'package:flutter_music_player/screens/audio_list/audio_list_screen.dart';
 import 'package:get/get.dart';
 import '../screens/home/home.dart';
@@ -61,7 +62,8 @@ class NavigationController extends GetxController{
   final screens = [
     const Home(),
     const AudioListScreen(),
-    Container(color: Colors.pinkAccent,),
+    //Container(color: Colors.pinkAccent,),
+    const LibraryListScreen(),
     Container(color: Colors.blue,)
   ];
 }
