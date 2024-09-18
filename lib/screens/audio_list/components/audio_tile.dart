@@ -145,7 +145,7 @@ class _FavButtonState extends State<FavButton> {
   Future toggleLike() async{
     widget.item.extras?['isFav'] = !widget.item.extras?['isFav'];
     await widget.likedSongsController.toggleLike(widget.item);
-    await widget.audioPlayerHandler.updateQueue(widget.likedSongsController.likedSongs);
+    //await widget.audioPlayerHandler.updateQueue(widget.likedSongsController.likedSongs);
   }
 
 }
