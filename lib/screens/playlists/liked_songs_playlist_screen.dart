@@ -48,14 +48,15 @@ class LikedSongsPlaylistScreen extends StatelessWidget {
                 child: Text(
                   'No liked songs yet',
                   style: TextStyle(
-                    fontWeight: FontWeight.w800
+                    fontWeight: FontWeight.w800,
+                    fontSize: 20
                   ),
                 ),
               );
             }
             return AudioTile(
               item: item,
-              audioHandler: audioPlayerService.justAudioPlayerHandler,
+              audioPlayerService: audioPlayerService,
               index: index
             );
           }

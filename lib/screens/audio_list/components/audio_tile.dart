@@ -2,6 +2,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/common/ui_color.dart';
 import 'package:flutter_music_player/getx_controllers/liked_songs_controller.dart';
+import 'package:flutter_music_player/getx_services/audio_player_getx_service.dart';
 import 'package:flutter_music_player/services/audio_player_handler.dart';
 import 'package:flutter_music_player/screens/audio_player/audio_player_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,17 +13,41 @@ class AudioTile extends StatelessWidget {
   const AudioTile({
     super.key,
     required this.item,
-    required this.audioHandler,
+    required this.audioPlayerService,
     required this.index
   });
-  final JustAudioPlayerHandler audioHandler;
+  final AudioPlayerService audioPlayerService;
   final MediaItem item;
   final int index;
 
   @override
   Widget build(BuildContext context) {
     //debugPrint(index.toString());
+    final audioHandler = audioPlayerService.justAudioPlayerHandler;
     final LikedSongsController likedSongsController = Get.find();
+
+    Future<void> handleTap()async{
+      if(audioPlayerService.songController.currentPlayingSongIndex.value == index &&
+          audioPlayerService.songController.isPlaying.value){
+        await audioHandler.pause();
+        audioPlayerService.songController.isPlaying(false);
+      }
+      else if(audioPlayerService.songController.currentPlayingSongIndex.value == index &&
+          !audioPlayerService.songController.isPlaying.value){
+        await audioHandler.play();
+        audioPlayerService.songController.isPlaying(true);
+      }
+      else{
+        await audioHandler.skipToQueueItem(index);
+        audioPlayerService.songController.isPlaying(true);
+        audioPlayerService.songController.currentPlayingSongIndex(index);
+      }
+      Get.to(
+        AudioPlayerScreen(audioHandler: audioHandler,),
+        transition: Transition.rightToLeft,
+        duration: const Duration(milliseconds: 250)
+      );
+    }
     return StreamBuilder(
       stream: audioHandler.mediaItem,
       builder: (_, itemSnapshot){
@@ -63,7 +88,7 @@ class AudioTile extends StatelessWidget {
               child: FavButton(
                 item: item, 
                 likedSongsController: likedSongsController,
-                audioPlayerHandler: audioHandler,
+                audioPlayerHandler: audioHandler
               ),
             ),
             shape: Border(
@@ -73,18 +98,7 @@ class AudioTile extends StatelessWidget {
             ),
             contentPadding: EdgeInsets.zero,
             onTap: ()async{
-              //? play/pause logic needs to be implemented
-              await audioHandler.skipToQueueItem(index);
-              //! autoplay issue if the item index = 0
-              // if(itemSnapshot.data! != item){
-              //   //print('index from audio tile =$index');
-              //   await audioHandler.skipToQueueItem(index);
-              // }
-              Get.to(
-                AudioPlayerScreen(audioHandler: audioHandler,),
-                transition: Transition.rightToLeft,
-                duration: const Duration(milliseconds: 250)
-              );
+              await handleTap();
             },
           ),
         );

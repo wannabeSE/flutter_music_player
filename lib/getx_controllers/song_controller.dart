@@ -12,7 +12,8 @@ class SongController extends GetxController {
   late List<MediaItem> _playlistSongs;
   final OnAudioQuery audioQuery = OnAudioQuery();
   final LikedSongsController likedSongsController = Get.put(LikedSongsController());
-
+  RxInt currentPlayingSongIndex = 0.obs;
+  RxBool isPlaying = false.obs;
   Future getDeviceSongs() async {
     try {
       await requestPermission();

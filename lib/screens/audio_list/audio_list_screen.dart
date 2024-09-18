@@ -10,7 +10,6 @@ class AudioListScreen extends StatelessWidget {
   const AudioListScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    debugPrint('rebuild');
     final AudioPlayerService audioPlayerService = Get.find<AudioPlayerService>();
     final songList = audioPlayerService.songController.deviceSongs;
     return Container(
@@ -21,11 +20,22 @@ class AudioListScreen extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           itemCount: songList.length,
           itemBuilder: (_, index) {
+            if(songList.isEmpty){
+              return const Center(
+                child:Text(
+                  'No songs found!',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 20
+                  ),
+                ),
+              );
+            }
             MediaItem item = songList[index];
             return AudioTile(
               index: index,
               item: item,
-              audioHandler: audioPlayerService.justAudioPlayerHandler
+              audioPlayerService: audioPlayerService
             );
           }
         ),

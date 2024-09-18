@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 class AudioPlayerService extends GetxService {
   late JustAudioPlayerHandler justAudioPlayerHandler;
   final songController = Get.put(SongController());
-  //final likedSongsController = Get.put(LikedSongsController());
   Future<void> init() async {
     justAudioPlayerHandler = await AudioService.init(
       builder: () => JustAudioPlayerHandler(),

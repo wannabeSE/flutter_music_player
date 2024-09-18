@@ -7,9 +7,9 @@ A new Flutter project that can play from device storage with
 
 ## Getting Started
 
-git clone [project link]
-flutter pub get
-flutter run
+- git clone [project link]
+- flutter pub get
+- flutter run
 
 ## Current phase
 # Audio list screen
