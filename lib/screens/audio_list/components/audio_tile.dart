@@ -14,12 +14,13 @@ class AudioTile extends StatelessWidget {
     super.key,
     required this.item,
     required this.audioPlayerService,
-    required this.index
+    required this.index,
+    required this.flag
   });
   final AudioPlayerService audioPlayerService;
   final MediaItem item;
   final int index;
-
+  final bool flag;
   @override
   Widget build(BuildContext context) {
     //debugPrint(index.toString());
@@ -88,7 +89,8 @@ class AudioTile extends StatelessWidget {
               child: FavButton(
                 item: item, 
                 likedSongsController: likedSongsController,
-                audioPlayerHandler: audioHandler
+                audioPlayerHandler: audioHandler,
+                flag: flag,
               ),
             ),
             shape: Border(
@@ -113,10 +115,12 @@ class FavButton extends StatefulWidget {
     required this.item,
     required this.likedSongsController, 
     required this.audioPlayerHandler,
+    required this.flag
   });
   final MediaItem item;
   final LikedSongsController likedSongsController;
   final JustAudioPlayerHandler audioPlayerHandler;
+  final bool flag;
   @override
   State<FavButton> createState() => _FavButtonState();
 }
@@ -145,7 +149,9 @@ class _FavButtonState extends State<FavButton> {
   Future toggleLike() async{
     widget.item.extras?['isFav'] = !widget.item.extras?['isFav'];
     await widget.likedSongsController.toggleLike(widget.item);
-    //await widget.audioPlayerHandler.updateQueue(widget.likedSongsController.likedSongs);
+    if(widget.flag){
+      await widget.audioPlayerHandler.updateQueue(widget.likedSongsController.likedSongs);
+    }
   }
 
 }

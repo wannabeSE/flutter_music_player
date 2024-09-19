@@ -57,7 +57,8 @@ class LikedSongsPlaylistScreen extends StatelessWidget {
             return AudioTile(
               item: item,
               audioPlayerService: audioPlayerService,
-              index: index
+              index: index,
+              flag: true,
             );
           }
         )),

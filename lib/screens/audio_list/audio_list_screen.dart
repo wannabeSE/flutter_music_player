@@ -35,7 +35,8 @@ class AudioListScreen extends StatelessWidget {
             return AudioTile(
               index: index,
               item: item,
-              audioPlayerService: audioPlayerService
+              audioPlayerService: audioPlayerService,
+              flag: false,
             );
           }
         ),
