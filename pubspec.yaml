@@ -43,6 +43,7 @@ dependencies:
   audio_service: ^0.18.15
   audio_video_progress_bar: ^2.0.3
   shared_preferences: ^2.3.2
+  flutter_infinite_marquee: ^1.0.0
 
 dev_dependencies:
   flutter_test:

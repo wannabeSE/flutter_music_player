@@ -1,5 +1,6 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_infinite_marquee/flutter_infinite_marquee.dart';
 import 'package:flutter_music_player/common/ui_color.dart';
 import 'package:flutter_music_player/screens/audio_player/components/audio_controls.dart';
 import 'package:flutter_music_player/services/audio_player_handler.dart';
@@ -40,11 +41,13 @@ class AudioPlayerScreen extends StatelessWidget {
               return Column(
                 children: [
                   Expanded(
+                    flex: 3,
                     child: Container(
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                       ),
+                      margin: const EdgeInsets.only(bottom: 4),
                       child: QueryArtworkWidget(
                         id: item.extras?['song_id'],
                         type: ArtworkType.AUDIO,
@@ -60,32 +63,46 @@ class AudioPlayerScreen extends StatelessWidget {
                     ),
                   ),
                   // Audio Information
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4.0),
-                    child: Text(
-                      item.title,
-                      maxLines: 1,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 16,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: Get.height * 0.05,
+                          width: Get.width * 0.9,
+                          child: InfiniteMarquee(
+                            frequency: const Duration(milliseconds: 20),
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (_, index){
+                              return Text(
+                                item.title,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 20
+                                ),
+                              );
+                            }
+                          ),
+                        ),
+                        Text(
+                          item.artist ?? 'unknown artist',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey
+                          ),
+                        ),
+                      ],
+                    )
                   ),
-                  Text(
-                    item.artist ?? 'unknown artist',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey
-                    ),
-                  ),
+
                   //Progress Bar
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4),
                     child: AudioProgressBar(item: item, audioHandler: audioHandler,),
                   ),
                   //Audio Controls
                   Expanded(
+                    flex: 2,
                     child: AudioControls(
                       audioHandler: audioHandler,
                     )

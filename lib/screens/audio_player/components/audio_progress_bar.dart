@@ -20,6 +20,7 @@ class AudioProgressBar extends StatelessWidget {
           return ProgressBar(
             thumbGlowRadius: 10,
             progress: positionSnapshot.data! ,
+            baseBarColor: Colors.white70,
             total: item.duration!,
             onSeek: (position){
               audioHandler.seek(position);
