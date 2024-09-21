@@ -50,6 +50,7 @@ class AudioPlayerScreen extends StatelessWidget {
                         type: ArtworkType.AUDIO,
                         artworkWidth: double.infinity,
                         artworkHeight: double.infinity,
+                        artworkFit: BoxFit.contain,
                         nullArtworkWidget: Icon(
                           Icons.music_note_rounded,
                           color: Colors.white,

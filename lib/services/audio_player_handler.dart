@@ -22,9 +22,10 @@ class JustAudioPlayerHandler extends BaseAudioHandler with QueueHandler, SeekHan
     playbackState.add(playbackState.value.copyWith(
       controls: [
         const MediaControl(
-            androidIcon: "drawable/ic_shuffle",
-            label: "shuffle",
-            action: MediaAction.setShuffleMode
+          androidIcon: "drawable/ic_shuffle",
+          label: "shuffle",
+          action: MediaAction.setShuffleMode,
+          customAction: CustomMediaAction(name: 'setShuffle')
         ),
         MediaControl.skipToPrevious,
         if (audioPlayer.playing) MediaControl.pause else MediaControl.play,
@@ -32,7 +33,8 @@ class JustAudioPlayerHandler extends BaseAudioHandler with QueueHandler, SeekHan
         const MediaControl(
           androidIcon: "drawable/ic_repeat",
           label: "repeat",
-          action: MediaAction.setRepeatMode
+          action: MediaAction.custom,
+            customAction: CustomMediaAction(name: 'setRepeat')
         )
       ],
       systemActions: {
@@ -106,6 +108,7 @@ class JustAudioPlayerHandler extends BaseAudioHandler with QueueHandler, SeekHan
 
   @override
   Future<void> updateQueue(List<MediaItem> newQueue)async{
+    audioSources.clear();
     await initSongs(newQueue);
   }
 
@@ -133,6 +136,9 @@ class JustAudioPlayerHandler extends BaseAudioHandler with QueueHandler, SeekHan
 
   }
   @override
-  Future<void> onTaskRemoved() => audioPlayer.stop();
+  Future<void> onTaskRemoved() async{
+    await audioPlayer.dispose();
+    await audioPlayer.stop();
+  }
 
 }
