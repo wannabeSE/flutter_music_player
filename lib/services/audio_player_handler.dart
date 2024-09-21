@@ -21,9 +21,19 @@ class JustAudioPlayerHandler extends BaseAudioHandler with QueueHandler, SeekHan
   void _broadcastState(PlaybackEvent event) {
     playbackState.add(playbackState.value.copyWith(
       controls: [
+        const MediaControl(
+            androidIcon: "drawable/ic_shuffle",
+            label: "shuffle",
+            action: MediaAction.setShuffleMode
+        ),
         MediaControl.skipToPrevious,
         if (audioPlayer.playing) MediaControl.pause else MediaControl.play,
         MediaControl.skipToNext,
+        const MediaControl(
+          androidIcon: "drawable/ic_repeat",
+          label: "repeat",
+          action: MediaAction.setRepeatMode
+        )
       ],
       systemActions: {
         MediaAction.seek,
@@ -44,10 +54,10 @@ class JustAudioPlayerHandler extends BaseAudioHandler with QueueHandler, SeekHan
       queueIndex: event.currentIndex,
     ));
   }
-  //? creating playlist with device's local storage song
+  //? creating playlist with provided list of audios
   Future initSongs(List<MediaItem> songs)async{
     audioPlayer.playbackEventStream.listen(_broadcastState);
-    //? creating list of audio sources from the provided songs
+    //? creating list of audio sources from the provided audios
     audioSources = songs.map((song) => _createAudioSource(song)).toList();
 
     await audioPlayer
@@ -66,21 +76,6 @@ class JustAudioPlayerHandler extends BaseAudioHandler with QueueHandler, SeekHan
     });
   }
 
-  // Future initPlaylist(List<MediaItem> songs)async{
-  //   audioPlayer.playbackEventStream.listen(_broadcastState);
-  //   final playlistSource = songs.map((song) => _createAudioSource(song)).toList();
-  //   await audioPlayer.setAudioSource(ConcatenatingAudioSource(children: playlistSource));
-  //   // print('intiPlaylist Queue ${queue.value}');
-  //   queue.value.clear();
-  //   queue.value.addAll(songs);
-  //   queue.add(queue.value);
-  //
-  //   _listenForCurrentSongIndexChanges();
-  //
-  //   audioPlayer.processingStateStream.listen((state){
-  //     if(state == ProcessingState.completed) skipToNext();
-  //   });
-  // }
   Future<void> switchPlaylist(List<MediaItem> songs)async{
     await audioPlayer.stop();
     await initSongs(songs);
@@ -116,7 +111,7 @@ class JustAudioPlayerHandler extends BaseAudioHandler with QueueHandler, SeekHan
 
   @override
   Future<void> setShuffleMode(AudioServiceShuffleMode shuffleMode)async{
-
+    //print('===>>>hit<<<<====');
     if(shuffleMode == AudioServiceShuffleMode.all){
       audioPlayer.setShuffleModeEnabled(true);
     }else{
@@ -137,5 +132,7 @@ class JustAudioPlayerHandler extends BaseAudioHandler with QueueHandler, SeekHan
     }
 
   }
+  @override
+  Future<void> onTaskRemoved() => audioPlayer.stop();
 
 }
