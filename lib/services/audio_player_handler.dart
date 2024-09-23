@@ -66,7 +66,6 @@ class JustAudioPlayerHandler extends BaseAudioHandler with QueueHandler, SeekHan
         .setAudioSource(
         ConcatenatingAudioSource(children: audioSources)
     );
-    //print('audio sources ====>\n$audioSources');
     queue.value.clear();
     queue.value.addAll(songs);
     queue.add(queue.value);

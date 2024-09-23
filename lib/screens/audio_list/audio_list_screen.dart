@@ -11,7 +11,7 @@ class AudioListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AudioPlayerService audioPlayerService = Get.find<AudioPlayerService>();
-    final songList = audioPlayerService.songController.deviceSongs;
+    final List<MediaItem> songList = audioPlayerService.songController.deviceSongs;
     return Container(
       decoration: TColor.gradientBg,
       child: Scaffold(

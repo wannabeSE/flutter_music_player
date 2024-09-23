@@ -8,22 +8,23 @@ import 'package:on_audio_query/on_audio_query.dart';
 
 class SongController extends GetxController {
   RxList<MediaItem> deviceSongs = <MediaItem>[].obs;
-  final List<MediaItem> _songs = [];
-  late List<MediaItem> _playlistSongs;
+  late List<MediaItem> _playlistSongs = [];
   final OnAudioQuery audioQuery = OnAudioQuery();
   final LikedSongsController likedSongsController = Get.put(LikedSongsController());
   RxInt currentPlayingSongIndex = 0.obs;
   RxBool isPlaying = false.obs;
+
   Future getDeviceSongs() async {
+    final List<MediaItem> songs = [];
     try {
       await requestPermission();
       final List songModels = await audioQuery.querySongs();
       for (final SongModel songModel in songModels) {
         final MediaItem song = await songModelToMediaItem(songModel);
-        _songs.add(song);
+        songs.add(song);
       }
-      deviceSongs.value = _songs;
-      return _songs;
+      deviceSongs.value = songs;
+      return songs;
     } catch (e) {
       debugPrint('Error fetching device songs $e');
       deviceSongs([]);
