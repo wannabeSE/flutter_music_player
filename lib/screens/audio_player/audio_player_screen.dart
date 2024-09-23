@@ -48,53 +48,11 @@ class AudioPlayerScreen extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                       margin: const EdgeInsets.only(bottom: 4),
-                      child: QueryArtworkWidget(
-                        id: item.extras?['song_id'],
-                        type: ArtworkType.AUDIO,
-                        artworkWidth: double.infinity,
-                        artworkHeight: double.infinity,
-                        artworkFit: BoxFit.contain,
-                        nullArtworkWidget: Icon(
-                          Icons.music_note_rounded,
-                          color: Colors.white,
-                          size: Get.height * 0.3,
-                        ),
-                      ),
+                      child: CoverImage(item: item),
                     ),
                   ),
                   // Audio Information
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: Get.height * 0.05,
-                          width: Get.width * 0.9,
-                          child: InfiniteMarquee(
-                            frequency: const Duration(milliseconds: 20),
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (_, index){
-                              return Text(
-                                item.title,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 20
-                                ),
-                              );
-                            }
-                          ),
-                        ),
-                        Text(
-                          item.artist ?? 'unknown artist',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.grey
-                          ),
-                        ),
-                      ],
-                    )
-                  ),
-
+                  AudioInfo(item: item),
                   //Progress Bar
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4),
@@ -113,6 +71,76 @@ class AudioPlayerScreen extends StatelessWidget {
             return const Center(child: Text('Unable to play'),);
           }
         ),
+      ),
+    );
+  }
+}
+
+class AudioInfo extends StatelessWidget {
+  const AudioInfo({
+    super.key,
+    required this.item,
+  });
+
+  final MediaItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: Get.height * 0.05,
+            width: Get.width * 0.9,
+            child: InfiniteMarquee(
+              frequency: const Duration(milliseconds: 20),
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (_, index){
+                return Text(
+                  item.title,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 20
+                  ),
+                );
+              }
+            ),
+          ),
+          Text(
+            item.artist ?? 'unknown artist',
+            style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                color: Colors.grey
+            ),
+          ),
+        ],
+      )
+    );
+  }
+}
+
+class CoverImage extends StatelessWidget {
+  const CoverImage({
+    super.key,
+    required this.item,
+  });
+
+  final MediaItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    return QueryArtworkWidget(
+      id: item.extras?['song_id'],
+      type: ArtworkType.AUDIO,
+      artworkWidth: double.infinity,
+      artworkHeight: double.infinity,
+      artworkFit: BoxFit.contain,
+      artworkQuality: FilterQuality.high,
+      nullArtworkWidget: Icon(
+        Icons.music_note_rounded,
+        color: Colors.white,
+        size: Get.height * 0.3,
       ),
     );
   }
