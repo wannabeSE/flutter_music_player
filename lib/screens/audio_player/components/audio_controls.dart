@@ -20,7 +20,7 @@ class AudioControls extends StatelessWidget {
         if(snapshot.data != null){
           bool playing = snapshot.data!.playing;
           return SizedBox(
-            height: Get.height * 0.4,
+            //height: Get.height * 0.4,
             width: double.infinity,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -51,7 +51,7 @@ class AudioControls extends StatelessWidget {
                     }
 
                   },
-                  icon: _controlButtonStyle(Icons.skip_previous_rounded, 40)
+                  icon: _controlButtonStyle(Icons.skip_previous_rounded, 36)
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -81,10 +81,10 @@ class AudioControls extends StatelessWidget {
                     )
                   ),
                   child: CircleAvatar(
-                    maxRadius: 48,
+                    maxRadius: 40,
                     backgroundColor: TColor.primary,
                     child: Transform.scale(
-                      scale: 2.5,
+                      scale: 2,
                       child: IconButton(
                         onPressed: () {
                           if(playing){
@@ -112,7 +112,7 @@ class AudioControls extends StatelessWidget {
                     }
 
                   },
-                  icon: _controlButtonStyle(Icons.skip_next_rounded, 40)
+                  icon: _controlButtonStyle(Icons.skip_next_rounded, 36)
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
