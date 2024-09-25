@@ -20,8 +20,10 @@ class SongController extends GetxController {
       await requestPermission();
       final List songModels = await audioQuery.querySongs();
       for (final SongModel songModel in songModels) {
-        final MediaItem song = await songModelToMediaItem(songModel);
-        songs.add(song);
+        if(songModel.isMusic!){
+          final MediaItem song = await songModelToMediaItem(songModel);
+          songs.add(song);
+        }
       }
       deviceSongs.value = songs;
       return songs;
@@ -38,6 +40,5 @@ class SongController extends GetxController {
     }catch(e){
       debugPrint('error loading playlist $e');
     }
-
   }
 }

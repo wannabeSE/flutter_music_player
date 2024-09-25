@@ -148,11 +148,18 @@ class CoverImage extends StatelessWidget {
       artworkHeight: double.infinity,
       artworkFit: BoxFit.contain,
       artworkQuality: FilterQuality.high,
-      nullArtworkWidget: Icon(
-        Icons.music_note_rounded,
-        color: Colors.white,
-        size: Get.height * 0.3,
+      size: 500,
+      quality: 100,
+      nullArtworkWidget: CircleAvatar(
+        backgroundColor: Colors.black54,
+        maxRadius: double.infinity,
+        child: Icon(
+          Icons.music_note_rounded,
+          color: Colors.white,
+          size: Get.height * 0.2,
+        ),
       ),
     );
   }
 }
+
