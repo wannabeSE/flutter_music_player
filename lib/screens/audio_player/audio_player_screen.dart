@@ -90,6 +90,7 @@ class AudioInfo extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          item.title.length > 40 ?
           SizedBox(
             height: Get.height * 0.05,
             width: Get.width * 0.9,
@@ -100,11 +101,21 @@ class AudioInfo extends StatelessWidget {
                 return Text(
                   item.title,
                   style: const TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 20
+                    fontWeight: FontWeight.w800,
+                    fontSize: 20
                   ),
                 );
               }
+            ),
+          ) : SizedBox(
+            height: Get.height * 0.05,
+            width: Get.width * 0.9,
+            child: Text(
+              item.title,
+              style: const TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: 20
+              ),
             ),
           ),
           Text(

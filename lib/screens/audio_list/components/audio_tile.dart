@@ -9,6 +9,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
+import '../../../utils/formatter_utility.dart';
+
 class AudioTile extends StatelessWidget {
   const AudioTile({
     super.key,
@@ -23,7 +25,6 @@ class AudioTile extends StatelessWidget {
   final bool flag;
   @override
   Widget build(BuildContext context) {
-    //debugPrint(index.toString());
     final audioHandler = audioPlayerService.justAudioPlayerHandler;
     final LikedSongsController likedSongsController = Get.find();
 
@@ -55,15 +56,7 @@ class AudioTile extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: ListTile(
-            leading: SizedBox(
-              height: 44,
-              width: 44,
-              child: QueryArtworkWidget(
-                id: item.extras?['song_id'],
-                type: ArtworkType.AUDIO,
-                nullArtworkWidget: const Icon(Icons.music_note, color: Colors.white,),
-              ),
-            ),
+            leading: LeadingImage(item: item),
             title: SizedBox(
               width: Get.width * 0.3,
               child: Text(
@@ -71,19 +64,12 @@ class AudioTile extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w600
                 ),
               ),
             ),
-            subtitle: Text(
-              item.artist ?? 'unknown artist',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: 10
-              ),
-            ),
+            subtitle: SubtitleWidgets(item: item),
             trailing: Padding(
               padding: const EdgeInsets.only(right: 8),
               child: FavButton(
@@ -105,6 +91,81 @@ class AudioTile extends StatelessWidget {
           ),
         );
       }
+    );
+  }
+}
+
+class SubtitleWidgets extends StatelessWidget {
+  const SubtitleWidgets({
+    super.key,
+    required this.item,
+  });
+
+  final MediaItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        item.artist!.length > 25 ?
+        SizedBox(
+          width: Get.width * 0.4,
+          child: Text(
+            item.artist ?? 'Unknown artist',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 12
+            ),
+          ),
+        ) : Text(
+          item.artist ?? 'Unknown artist',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+              fontSize: 12
+          ),
+        ),
+        SvgPicture.asset(
+          'assets/icons/dot.svg',
+          colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn
+          )
+        ),
+        Text(
+          FormatterUtility.durationFormatter(item.duration ?? Duration.zero),
+          style: const TextStyle(
+            fontSize: 12
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class LeadingImage extends StatelessWidget {
+  const LeadingImage({
+    super.key,
+    required this.item,
+  });
+
+  final MediaItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 44,
+      width: 44,
+      child: QueryArtworkWidget(
+        id: item.extras?['song_id'],
+        type: ArtworkType.AUDIO,
+        nullArtworkWidget: const CircleAvatar(
+          backgroundColor: Colors.black87,
+          child: Icon(
+            Icons.music_note_rounded,
+            color: Colors.white,
+          )
+        ),
+      ),
     );
   }
 }
