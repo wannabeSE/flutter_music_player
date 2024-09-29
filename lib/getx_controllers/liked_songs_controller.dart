@@ -9,7 +9,7 @@ import '../utils/media_item_helper.dart';
 class LikedSongsController extends GetxController{
   RxList<MediaItem> likedSongs = <MediaItem>[].obs;
   static const String likedSongKey = 'liked_songs';
-  //late AudioPlayerService audioPlayerService;
+
   @override
   void onInit()async{
     super.onInit();
@@ -32,9 +32,7 @@ class LikedSongsController extends GetxController{
         .toList();
     await prefs.setStringList(likedSongKey, likedAudios);
   }
-  // Future<void> _initAudioService()async{
-  //   audioPlayerService = await Get.putAsync(() => AudioPlayerService());
-  // }
+
   Future<bool> isLiked(MediaItem item)async{
 
     if(likedSongs.any((i) => i.id == item.id)) return true;
@@ -50,7 +48,6 @@ class LikedSongsController extends GetxController{
 
   Future<void> unlikeSong(MediaItem item) async {
     likedSongs.removeWhere((i) => i.id == item.id);
-    //await audioPlayerService.playlistSwitcher(playlistName: 'liked_songs');
     saveLikedSongs();
   }
 
