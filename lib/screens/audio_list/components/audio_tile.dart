@@ -1,9 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/common/ui_color.dart';
-import 'package:flutter_music_player/getx_controllers/liked_songs_controller.dart';
 import 'package:flutter_music_player/getx_services/audio_player_getx_service.dart';
-import 'package:flutter_music_player/services/audio_player_handler.dart';
 import 'package:flutter_music_player/screens/audio_player/audio_player_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -26,7 +24,6 @@ class AudioTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final audioHandler = audioPlayerService.justAudioPlayerHandler;
-    final LikedSongsController likedSongsController = Get.find();
 
     Future<void> handleTap()async{
       if(audioPlayerService.songController.currentPlayingSongIndex.value == index &&
@@ -72,11 +69,9 @@ class AudioTile extends StatelessWidget {
             subtitle: SubtitleWidgets(item: item),
             trailing: Padding(
               padding: const EdgeInsets.only(right: 8),
-              child: FavButton(
-                item: item, 
-                likedSongsController: likedSongsController,
-                audioPlayerHandler: audioHandler,
-                flag: flag,
+              child: SvgPicture.asset(
+                'assets/icons/menu_vert.svg',
+                colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn)
               ),
             ),
             shape: Border(
@@ -170,49 +165,3 @@ class LeadingImage extends StatelessWidget {
   }
 }
 
-class FavButton extends StatefulWidget {
-  const FavButton({
-    super.key,
-    required this.item,
-    required this.likedSongsController, 
-    required this.audioPlayerHandler,
-    required this.flag
-  });
-  final MediaItem item;
-  final LikedSongsController likedSongsController;
-  final JustAudioPlayerHandler audioPlayerHandler;
-  final bool flag;
-  @override
-  State<FavButton> createState() => _FavButtonState();
-}
-
-class _FavButtonState extends State<FavButton> {
-  @override
-  Widget build(BuildContext context) {
-    //debugPrint('icon rebuild');
-    return IconButton(
-      onPressed: ()async{
-        await toggleLike();
-        setState(() {});
-      }, 
-      icon: widget.item.extras?['isFav'] ?? false 
-          ? _favIcon('assets/icons/fav_filled.svg')
-          : _favIcon('assets/icons/favorite.svg')
-    );
-  }
-  Widget _favIcon(String iconPath){
-    return SvgPicture.asset(
-      iconPath,
-      colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn)
-    );
-  }
-
-  Future toggleLike() async{
-    widget.item.extras?['isFav'] = !widget.item.extras?['isFav'];
-    await widget.likedSongsController.toggleLike(widget.item);
-    if(widget.flag){
-      await widget.audioPlayerHandler.updateQueue(widget.likedSongsController.likedSongs);
-    }
-  }
-
-}

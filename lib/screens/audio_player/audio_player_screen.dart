@@ -42,14 +42,7 @@ class AudioPlayerScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 3,
-                    child: Container(
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                      ),
-                      margin: const EdgeInsets.only(bottom: 4),
-                      child: CoverImage(item: item),
-                    ),
+                    child: CoverImage(item: item)
                   ),
                   // Audio Information
                   AudioInfo(item: item),
@@ -141,22 +134,29 @@ class CoverImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return QueryArtworkWidget(
-      id: item.extras?['song_id'],
-      type: ArtworkType.AUDIO,
-      artworkWidth: double.infinity,
-      artworkHeight: double.infinity,
-      artworkFit: BoxFit.contain,
-      artworkQuality: FilterQuality.high,
-      size: 500,
-      quality: 100,
-      nullArtworkWidget: CircleAvatar(
-        backgroundColor: Colors.black54,
-        maxRadius: double.infinity,
-        child: Icon(
-          Icons.music_note_rounded,
-          color: Colors.white,
-          size: Get.height * 0.2,
+    return Container(
+      clipBehavior: Clip.hardEdge,
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+      ),
+      margin: const EdgeInsets.only(bottom: 4),
+      child: QueryArtworkWidget(
+        id: item.extras?['song_id'],
+        type: ArtworkType.AUDIO,
+        artworkWidth: double.infinity,
+        artworkHeight: double.infinity,
+        artworkFit: BoxFit.cover,
+        artworkQuality: FilterQuality.high,
+        size: 600,
+        quality: 100,
+        nullArtworkWidget: CircleAvatar(
+          backgroundColor: Colors.black54,
+          maxRadius: double.infinity,
+          child: Icon(
+            Icons.music_note_rounded,
+            color: Colors.white,
+            size: Get.height * 0.2,
+          ),
         ),
       ),
     );
