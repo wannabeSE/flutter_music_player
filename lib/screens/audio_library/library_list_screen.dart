@@ -13,8 +13,7 @@ class LibraryListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final audioPlayerService = Get.find<AudioPlayerService>();
-    final PlaylistController playlistController = Get.put(PlaylistController());
-
+    final PlaylistController playlistController = Get.find();
     return Container(
       decoration: TColor.gradientBg,
       child: Scaffold(
@@ -36,6 +35,7 @@ class LibraryListScreen extends StatelessWidget {
               audioPlayerService: audioPlayerService,
               index: index,
               playlistName: plName,
+              playlistController: playlistController,
             );
           }
         )),
@@ -84,7 +84,9 @@ class _PlaylistCreatorBoxState extends State<PlaylistCreatorBox> {
       _isLoading = true;
     });
     try{
-      await widget.controller.createNewPlaylist(_playlistNameController.text);
+      if(_playlistNameController.text.isNotEmpty){
+        await widget.controller.createNewPlaylist(_playlistNameController.text);
+      }
       if (mounted) {
         Navigator.of(context).pop();
       }
@@ -97,24 +99,25 @@ class _PlaylistCreatorBoxState extends State<PlaylistCreatorBox> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: TColor.primary,
       title: const Text(
         'Create new playlist',
         style: TextStyle(
-          color: Colors.black87,
-          fontSize: 12
+          color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.w600
         ),
       ),
-      content: SizedBox(
-        height: Get.height * 0.05,
-        child: TextField(
-          controller: _playlistNameController,
-          style: const TextStyle(
-            color: Colors.black87
-          ),
-          decoration: const InputDecoration(
-            contentPadding: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
-            border: OutlineInputBorder()
-          ),
+      content: TextField(
+        controller: _playlistNameController,
+        style: const TextStyle(
+          color: Colors.black87
+        ),
+        decoration: const InputDecoration(
+          fillColor: Colors.white,
+          filled: true,
+          contentPadding: EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+          border: OutlineInputBorder()
         ),
       ),
       actions: [
@@ -122,14 +125,27 @@ class _PlaylistCreatorBoxState extends State<PlaylistCreatorBox> {
           height: Get.height * 0.028,
           child: ElevatedButton(
             onPressed: _isLoading ? null : handleSubmit,
-            child: const Text('Add')
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white
+            ),
+            child: Text(
+              'Add',
+              style: TextStyle(
+                color: TColor.primary
+              ),
+            )
           ),
         ),
         TextButton(
           onPressed: (){
             Navigator.of(context).pop();
           },
-          child: const Text('Cancel')
+          child: const Text(
+            'Cancel',
+            style: TextStyle(
+              color: Colors.white
+            ),
+          )
         )
       ],
     );
@@ -141,12 +157,14 @@ class PlaylistTile extends StatelessWidget {
     super.key,
     required this.audioPlayerService,
     required this.index,
-    required this.playlistName
+    required this.playlistName,
+    required this.playlistController
   });
 
   final AudioPlayerService audioPlayerService;
   final int index;
   final String playlistName;
+  final PlaylistController playlistController;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -157,6 +175,19 @@ class PlaylistTile extends StatelessWidget {
         : _folderIconBuilder('assets/icons/folder.svg'),
         title: Text(playlistName),
         shape: const Border(bottom: BorderSide(color: Colors.white60)),
+        trailing: index == 0
+        ? null
+        : InkWell(
+          onTap: ()async{
+            await playlistController.deletePlaylist(index);
+          },
+          child: SvgPicture.asset(
+            'assets/icons/delete.svg',
+            colorFilter: const ColorFilter.mode(
+              Colors.white, BlendMode.srcIn
+            ),
+          ),
+        ),
         //? TODO: page controller
         onTap: ()async{
           await audioPlayerService.playlistSwitcher(playlistName: 'liked_songs');

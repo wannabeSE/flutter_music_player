@@ -46,7 +46,7 @@ class LikedSongsPlaylistScreen extends StatelessWidget {
             if(songList.isEmpty){
               return const Center(
                 child: Text(
-                  'No liked songs yet',
+                  'No liked songs yet!',
                   style: TextStyle(
                     fontWeight: FontWeight.w800,
                     fontSize: 20

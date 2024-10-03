@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/common/ui_color.dart';
 import 'package:flutter_music_player/components/bottom_navbar.dart';
+import 'package:flutter_music_player/getx_controllers/playlist_controller.dart';
 import 'package:flutter_music_player/getx_services/audio_player_getx_service.dart';
 import 'package:get/get.dart';
 
@@ -8,6 +9,7 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Get.put(AudioPlayerService()).init();
   await Get.put(AudioPlayerService()).loadSongs();
+  Get.put(PlaylistController());
   runApp(const MyApp());
 }
 
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         appBarTheme: const AppBarTheme(
           elevation: 0,
-          backgroundColor: Colors.transparent
+          color: Colors.transparent,
         ),
         fontFamily: 'Poppins',
         scaffoldBackgroundColor: Colors.transparent,

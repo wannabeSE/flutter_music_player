@@ -1,6 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/common/ui_color.dart';
+import 'package:flutter_music_player/getx_controllers/playlist_controller.dart';
 import 'package:flutter_music_player/getx_services/audio_player_getx_service.dart';
 import 'package:flutter_music_player/screens/audio_player/audio_player_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../utils/formatter_utility.dart';
+import 'dialog_widgets.dart';
 
 class AudioTile extends StatelessWidget {
   const AudioTile({
@@ -53,7 +55,11 @@ class AudioTile extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: ListTile(
-            leading: LeadingImage(item: item),
+            leading: LeadingImage(
+              item: item,
+              imgHeight: 44,
+              imgWidth: 44,
+            ),
             title: SizedBox(
               width: Get.width * 0.3,
               child: Text(
@@ -66,12 +72,27 @@ class AudioTile extends StatelessWidget {
                 ),
               ),
             ),
-            subtitle: SubtitleWidgets(item: item),
-            trailing: Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: SvgPicture.asset(
-                'assets/icons/menu_vert.svg',
-                colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn)
+            subtitle: SubtitleWidgets(
+              item: item,
+              fSize: 12,
+            ),
+            trailing: InkWell(
+              onTap: (){
+                showModalBottomSheet(
+                  context: context,
+                  backgroundColor: Colors.transparent,
+                  builder: (_){
+                    return BottomSheetWidgets(item: item);
+                  }
+                );
+              },
+              child: CircleAvatar(
+                radius: 20,
+                backgroundColor: Colors.transparent,
+                child: SvgPicture.asset(
+                  'assets/icons/menu_vert.svg',
+                  colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn)
+                ),
               ),
             ),
             shape: Border(
@@ -90,14 +111,99 @@ class AudioTile extends StatelessWidget {
   }
 }
 
-class SubtitleWidgets extends StatelessWidget {
-  const SubtitleWidgets({
+class BottomSheetWidgets extends StatelessWidget {
+  const BottomSheetWidgets({
     super.key,
     required this.item,
   });
 
   final MediaItem item;
 
+  @override
+  Widget build(BuildContext context) {
+    final PlaylistController plController = Get.find();
+    final List playlists = plController.allPlaylists;
+    return Container(
+      height: Get.height * 0.25,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.only(
+          topRight: Radius.circular(24),
+          topLeft: Radius.circular(24)
+        ),
+        color: TColor.primary
+      ),
+      child: Column(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: Colors.white
+                )
+              )
+            ),
+            child: ListTile(
+              leading: LeadingImage(
+                item: item,
+                imgHeight: 40,
+                imgWidth: 40
+              ),
+              title: Text(
+                item.title,
+                maxLines: 2,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14
+                ),
+              ),
+              subtitle: SubtitleWidgets(
+                item: item,
+                fSize: 12
+              ),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.add_box_rounded,
+              color: Colors.white,
+            ),
+            title: const Text(
+              'Add to playlist',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 12
+              ),
+            ),
+            onTap: (){
+              showAdaptiveDialog(
+                context: context,
+                builder: (_){
+                  return DialogWidgets(
+                    playlists: playlists,
+                    plController: plController
+                  );
+                }
+              );
+            },
+          )
+        ],
+      ),
+    );
+  }
+}
+
+
+
+class SubtitleWidgets extends StatelessWidget {
+  const SubtitleWidgets({
+    super.key,
+    required this.item,
+    required this.fSize
+  });
+
+  final MediaItem item;
+  final double fSize;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -109,27 +215,28 @@ class SubtitleWidgets extends StatelessWidget {
             item.artist ?? 'Unknown artist',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontSize: 12
+            style: TextStyle(
+              fontSize: fSize
             ),
           ),
         ) : Text(
           item.artist ?? 'Unknown artist',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: const TextStyle(
-              fontSize: 12
+          style: TextStyle(
+              fontSize: fSize
           ),
         ),
         SvgPicture.asset(
           'assets/icons/dot.svg',
-          colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn
+          colorFilter: const ColorFilter.mode(
+            Colors.white, BlendMode.srcIn
           )
         ),
         Text(
           FormatterUtility.durationFormatter(item.duration ?? Duration.zero),
-          style: const TextStyle(
-            fontSize: 12
+          style: TextStyle(
+            fontSize: fSize
           ),
         )
       ],
@@ -141,15 +248,18 @@ class LeadingImage extends StatelessWidget {
   const LeadingImage({
     super.key,
     required this.item,
+    required this.imgHeight,
+    required this.imgWidth,
   });
 
   final MediaItem item;
-
+  final double imgHeight;
+  final double imgWidth;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 44,
-      width: 44,
+      height: imgHeight,
+      width: imgWidth,
       child: QueryArtworkWidget(
         id: item.extras?['song_id'],
         type: ArtworkType.AUDIO,
