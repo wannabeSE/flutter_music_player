@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/getx_controllers/playlist_controller.dart';
-import 'package:flutter_music_player/screens/playlists/liked_songs_playlist_screen.dart';
+//import 'package:flutter_music_player/screens/playlists/liked_songs_playlist_screen.dart';
+import 'package:flutter_music_player/screens/audio_library/playlist_audio_list.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
@@ -28,9 +29,9 @@ class LibraryListScreen extends StatelessWidget {
         ),
         body: Obx(() =>
         ListView.builder(
-          itemCount: playlistController.allPlaylists.length,
+          itemCount: playlistController.allPlaylistsName.length,
           itemBuilder: (_, index){
-            String plName = playlistController.allPlaylists[index];
+            String plName = playlistController.allPlaylistsName[index];
             return PlaylistTile(
               audioPlayerService: audioPlayerService,
               index: index,
@@ -188,10 +189,14 @@ class PlaylistTile extends StatelessWidget {
             ),
           ),
         ),
-        //? TODO: page controller
         onTap: ()async{
-          await audioPlayerService.playlistSwitcher(playlistName: 'liked_songs');
-          Get.to(LikedSongsPlaylistScreen(audioPlayerService: audioPlayerService));
+          await audioPlayerService.playlistSwitcher(
+            playlistName: playlistController.allPlaylistKeys[index]
+          );
+          Get.to(PlaylistAudioList(
+            audioPlayerService: audioPlayerService,
+            plController: playlistController,
+          ));
         },
       ),
     );

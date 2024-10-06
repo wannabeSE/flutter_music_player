@@ -1,5 +1,6 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_music_player/getx_controllers/playlist_controller.dart';
 import 'package:flutter_music_player/getx_controllers/song_controller.dart';
 import 'package:flutter_music_player/services/audio_player_handler.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import 'package:get/get.dart';
 class AudioPlayerService extends GetxService {
   late JustAudioPlayerHandler justAudioPlayerHandler;
   final songController = Get.put(SongController());
+  final playlistController = Get.put(PlaylistController());
   Future<void> init() async {
     justAudioPlayerHandler = await AudioService.init(
       builder: () => JustAudioPlayerHandler(),
@@ -27,10 +29,16 @@ class AudioPlayerService extends GetxService {
       debugPrint('Error loading songs $e');
     }
   }
-  Future<void> loadNewPlaylistSongs()async{
+  Future<void> loadNewPlaylistSongs(String plKey)async{
+    // try{
+    //   final loadedSongs = await songController.getLikedPlaylistSongs();
+    //   await justAudioPlayerHandler.switchPlaylist(loadedSongs);
+    // }catch(e){
+    //   debugPrint('Error loading new playlist $e');
+    // }
     try{
-      final loadedSongs = await songController.getLikedPlaylistSongs();
-      await justAudioPlayerHandler.switchPlaylist(loadedSongs);
+      final loadedAudios = await playlistController.getPlaylistAudios(plKey);
+      await justAudioPlayerHandler.switchPlaylist(loadedAudios);
     }catch(e){
       debugPrint('Error loading new playlist $e');
     }
@@ -40,7 +48,7 @@ class AudioPlayerService extends GetxService {
       if(playlistName == 'device_songs'){
         await loadSongs();
       }else{
-        await loadNewPlaylistSongs();
+        await loadNewPlaylistSongs(playlistName);
       }
     }catch(e){
       debugPrint('Error switching playlist $e');

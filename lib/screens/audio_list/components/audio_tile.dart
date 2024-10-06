@@ -28,26 +28,28 @@ class AudioTile extends StatelessWidget {
     final audioHandler = audioPlayerService.justAudioPlayerHandler;
 
     Future<void> handleTap()async{
-      if(audioPlayerService.songController.currentPlayingSongIndex.value == index &&
-          audioPlayerService.songController.isPlaying.value){
-        await audioHandler.pause();
-        audioPlayerService.songController.isPlaying(false);
+      try{
+        if(audioPlayerService.songController.currentPlayingSongIndex.value == index){
+          if(audioPlayerService.songController.isPlaying.value){
+            await audioHandler.pause();
+            audioPlayerService.songController.isPlaying(false);
+          }else{
+            await audioHandler.play();
+            audioPlayerService.songController.isPlaying(true);
+          }
+        }else{
+          await audioHandler.skipToQueueItem(index);
+          audioPlayerService.songController.isPlaying(true);
+          audioPlayerService.songController.currentPlayingSongIndex(index);
+        }
+        await Get.to(
+          AudioPlayerScreen(audioHandler: audioHandler,),
+          transition: Transition.rightToLeft,
+          duration: const Duration(milliseconds: 250)
+        );
+      }catch(e){
+        debugPrint('Error in handleTap() $e');
       }
-      else if(audioPlayerService.songController.currentPlayingSongIndex.value == index &&
-          !audioPlayerService.songController.isPlaying.value){
-        await audioHandler.play();
-        audioPlayerService.songController.isPlaying(true);
-      }
-      else{
-        await audioHandler.skipToQueueItem(index);
-        audioPlayerService.songController.isPlaying(true);
-        audioPlayerService.songController.currentPlayingSongIndex(index);
-      }
-      Get.to(
-        AudioPlayerScreen(audioHandler: audioHandler,),
-        transition: Transition.rightToLeft,
-        duration: const Duration(milliseconds: 250)
-      );
     }
     return StreamBuilder(
       stream: audioHandler.mediaItem,
@@ -122,7 +124,7 @@ class BottomSheetWidgets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final PlaylistController plController = Get.find();
-    final List playlists = plController.allPlaylists;
+    final List<String> playlists = plController.allPlaylistsName;
     return Container(
       height: Get.height * 0.25,
       width: double.infinity,
@@ -180,6 +182,7 @@ class BottomSheetWidgets extends StatelessWidget {
                 context: context,
                 builder: (_){
                   return DialogWidgets(
+                    audio: item,
                     playlists: playlists,
                     plController: plController
                   );

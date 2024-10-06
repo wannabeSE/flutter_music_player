@@ -1,3 +1,4 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,17 +10,22 @@ class DialogWidgets extends StatelessWidget {
     super.key,
     required this.playlists,
     required this.plController,
+    required this.audio
   });
 
   final List playlists;
   final PlaylistController plController;
-
+  final MediaItem audio;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: TColor.primary,
       title: const DialogTitleWidget(),
-      content: DialogContents(playlists: playlists),
+      content: DialogContents(
+        playlists: playlists,
+        playlistController: plController,
+        audio: audio,
+      ),
       actions: [
         DialogActionButton(plController: plController)
       ],
@@ -34,7 +40,6 @@ class DialogActionButton extends StatelessWidget {
   });
 
   final PlaylistController plController;
-
   @override
   Widget build(BuildContext context) {
     return TextButton(
@@ -71,10 +76,13 @@ class DialogContents extends StatelessWidget {
   const DialogContents({
     super.key,
     required this.playlists,
+    required this.playlistController,
+    required this.audio
   });
 
   final List playlists;
-
+  final PlaylistController playlistController;
+  final MediaItem audio;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -84,19 +92,55 @@ class DialogContents extends StatelessWidget {
         ListView.builder(
           itemCount: playlists.length,
           itemBuilder: (_, i){
-            return ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(
-                playlists[i],
-                style: const TextStyle(
-                  fontSize: 14
-                ),
-              ),
-
+            return DialogBoxPlaylistTile(
+              playlistName: playlists[i],
+              playlistController: playlistController,
+              audio: audio
             );
           }
         )
       ),
+    );
+  }
+}
+
+class DialogBoxPlaylistTile extends StatefulWidget {
+  const DialogBoxPlaylistTile({
+    super.key,
+    required this.playlistName,
+    required this.playlistController,
+    required this.audio,
+  });
+
+  final String playlistName;
+  final PlaylistController playlistController;
+  final MediaItem audio;
+
+  @override
+  State<DialogBoxPlaylistTile> createState() => _DialogBoxPlaylistTileState();
+}
+
+class _DialogBoxPlaylistTileState extends State<DialogBoxPlaylistTile> {
+  Future handleTap(String plName, MediaItem item)async{
+    try{
+      await widget.playlistController.addAudioToPlaylist(plName, item);
+    }finally{
+      if(mounted) Navigator.of(context).pop();
+    }
+  }
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      title: Text(
+        widget.playlistName,
+        style: const TextStyle(
+          fontSize: 14
+        ),
+      ),
+      onTap:()async{
+        await handleTap(widget.playlistName, widget.audio);
+      }
     );
   }
 }
