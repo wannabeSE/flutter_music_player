@@ -43,8 +43,8 @@ class PlaylistAudioList extends StatelessWidget {
                   child: Text(
                     'No songs added yet!',
                     style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 20
+                      fontWeight: FontWeight.w800,
+                      fontSize: 20
                     ),
                   ),
                 );
@@ -53,7 +53,7 @@ class PlaylistAudioList extends StatelessWidget {
                 item: item,
                 audioPlayerService: audioPlayerService,
                 index: index,
-                flag: false
+                flag: true
               );
             }
           )

@@ -89,15 +89,17 @@ class DialogContents extends StatelessWidget {
       height: Get.height * 0.2,
       width: Get.width * 0.8,
       child: Obx(() =>
-        ListView.builder(
-          itemCount: playlists.length,
-          itemBuilder: (_, i){
-            return DialogBoxPlaylistTile(
-              playlistName: playlists[i],
-              playlistController: playlistController,
-              audio: audio
-            );
-          }
+        Scrollbar(
+          child: ListView.builder(
+            itemCount: playlists.length,
+            itemBuilder: (_, i){
+              return DialogBoxPlaylistTile(
+                playlistName: playlists[i],
+                playlistController: playlistController,
+                audio: audio
+              );
+            }
+          ),
         )
       ),
     );
@@ -203,6 +205,7 @@ class _DialogBoxPlaylistTileState extends State<DialogBoxPlaylistTile> {
       title: Text(
         widget.playlistName,
         style: const TextStyle(
+          overflow: TextOverflow.ellipsis,
           fontSize: 14
         ),
       ),

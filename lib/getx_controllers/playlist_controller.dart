@@ -11,6 +11,8 @@ class PlaylistController extends GetxController{
   static const String playlistPrefKey = 'playlists';
   static const String playlistKeys = 'pKey';
   List<String> allPlaylistKeys = [];
+  String currentPlaylistKey = '';
+
   @override
   void onInit()async{
     super.onInit();
@@ -57,10 +59,9 @@ class PlaylistController extends GetxController{
     loadedPlaylistAudios.add(convertedMediaItem);
     await pref.setStringList(playlistKey, loadedPlaylistAudios);
   }
-  Future<void> removeAudioFromPlaylist(String plKey, MediaItem audio)async{
-    plKey = plKey.replaceAll(' ', '_');
-    currentLoadedPlaylist.removeWhere((i) => i.id == audio.id);
-    updatePlaylist(plKey, currentLoadedPlaylist);
+  Future<void> removeAudioFromPlaylist(int index)async{
+    currentLoadedPlaylist.removeAt(index);
+    updatePlaylist(currentPlaylistKey, currentLoadedPlaylist);
   }
 
   Future deletePlaylist(int index)async{
@@ -88,6 +89,7 @@ class PlaylistController extends GetxController{
         .map((audio) =>
         MediaItemHelper.mapToMediaItem(jsonDecode(audio))).toList();
     currentLoadedPlaylist(convertedPlaylistAudiosList);
+    currentPlaylistKey = plKey;
     return currentLoadedPlaylist;
   }
 }

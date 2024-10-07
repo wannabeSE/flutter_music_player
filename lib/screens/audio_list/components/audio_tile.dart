@@ -1,15 +1,15 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/common/ui_color.dart';
-import 'package:flutter_music_player/getx_controllers/playlist_controller.dart';
 import 'package:flutter_music_player/getx_services/audio_player_getx_service.dart';
+import 'package:flutter_music_player/screens/audio_list/components/bottom_sheet/bottom_sheet_playlist_screen.dart';
 import 'package:flutter_music_player/screens/audio_player/audio_player_screen.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 import '../../../utils/formatter_utility.dart';
-import 'dialog_widgets.dart';
+import 'bottom_sheet/bottom_sheet_main_screen.dart';
 
 class AudioTile extends StatelessWidget {
   const AudioTile({
@@ -84,7 +84,13 @@ class AudioTile extends StatelessWidget {
                   context: context,
                   backgroundColor: Colors.transparent,
                   builder: (_){
-                    return BottomSheetWidgets(item: item);
+                    if(flag){
+                      return BottomSheetWidgetsPlaylistScreen(
+                        item: item,
+                        index: index,
+                      );
+                    }
+                    return BottomSheetWidgetsMainScreen(item: item);
                   }
                 );
               },
@@ -109,92 +115,6 @@ class AudioTile extends StatelessWidget {
           ),
         );
       }
-    );
-  }
-}
-
-class BottomSheetWidgets extends StatelessWidget {
-  const BottomSheetWidgets({
-    super.key,
-    required this.item,
-  });
-
-  final MediaItem item;
-
-  @override
-  Widget build(BuildContext context) {
-    final PlaylistController plController = Get.find();
-    final List<String> playlists = plController.allPlaylistsName;
-    return Container(
-      height: Get.height * 0.25,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(24),
-          topLeft: Radius.circular(24)
-        ),
-        color: TColor.primary
-      ),
-      child: Column(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Colors.white
-                )
-              )
-            ),
-            child: ListTile(
-              leading: LeadingImage(
-                item: item,
-                imgHeight: 40,
-                imgWidth: 40
-              ),
-              title: Text(
-                item.title,
-                maxLines: 2,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14
-                ),
-              ),
-              subtitle: SubtitleWidgets(
-                item: item,
-                fSize: 12
-              ),
-            ),
-          ),
-          ListTile(
-            leading: const Icon(
-              Icons.add_box_rounded,
-              color: Colors.white,
-            ),
-            title: const Text(
-              'Add to playlist',
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 12
-              ),
-            ),
-            onTap: (){
-              //popping the BottomSheet then rendering the DialogBox
-              Navigator.of(context).pop();
-              showAdaptiveDialog(
-                context: context,
-                builder: (_){
-                  return DialogWidgets(
-                    audio: item,
-                    playlists: playlists,
-                    plController: plController
-                  );
-                }
-              );
-
-            },
-          )
-        ],
-      ),
     );
   }
 }
