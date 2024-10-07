@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/getx_controllers/playlist_controller.dart';
-import 'package:flutter_music_player/screens/audio_library/playlist_audio_list.dart';
+import 'package:flutter_music_player/screens/playlists/playlist_audio_list.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 

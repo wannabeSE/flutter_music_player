@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PlaylistController extends GetxController{
-  RxList<String> allPlaylistsName = ['Liked songs'].obs;
+  RxList<String> allPlaylistsName = <String>['Liked songs'].obs;
   RxList<MediaItem> currentLoadedPlaylist = <MediaItem>[].obs;
   static const String playlistPrefKey = 'playlists';
   static const String playlistKeys = 'pKey';
@@ -16,15 +16,24 @@ class PlaylistController extends GetxController{
   @override
   void onInit()async{
     super.onInit();
+    await createLikedPlaylist();
     await getAllPlaylists();
     await getAllPlaylistKeys();
   }
-
+  Future createLikedPlaylist()async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String>? allCreatedPlaylist = prefs.getStringList(playlistPrefKey) ?? [];
+    if(allCreatedPlaylist.isEmpty){
+      await prefs.setStringList(playlistPrefKey, ['Liked songs']);
+      await prefs.setStringList(playlistKeys, ['Liked_songs']);
+    }else{
+      return;
+    }
+  }
   Future savePlaylistChanges()async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final SharedPreferences prefKeys = await SharedPreferences.getInstance();
     await prefs.setStringList(playlistPrefKey, allPlaylistsName);
-    await prefKeys.setStringList(playlistKeys, allPlaylistKeys);
+    await prefs.setStringList(playlistKeys, allPlaylistKeys);
     allPlaylistsName.refresh();
   }
   Future<void> updatePlaylist(String playlistKey, List<MediaItem> updatedAudioList)async{
@@ -78,7 +87,7 @@ class PlaylistController extends GetxController{
 
   Future getAllPlaylistKeys()async{
     final SharedPreferences prefKeys = await SharedPreferences.getInstance();
-    List<String>? loadedKeys = prefKeys.getStringList(playlistKeys) ?? ['Liked_songs'];
+    List<String>? loadedKeys = prefKeys.getStringList(playlistKeys) ?? [];
     allPlaylistKeys = loadedKeys;
   }
 

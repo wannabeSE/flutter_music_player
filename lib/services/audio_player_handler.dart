@@ -56,10 +56,10 @@ class JustAudioPlayerHandler extends BaseAudioHandler with QueueHandler, SeekHan
       queueIndex: event.currentIndex,
     ));
   }
-  //? creating playlist with provided list of audios
+  // creating playlist with provided list of audios
   Future initSongs(List<MediaItem> songs)async{
     audioPlayer.playbackEventStream.listen(_broadcastState);
-    //? creating list of audio sources from the provided audios
+    // creating list of audio sources from the provided audios
     audioSources = songs.map((song) => _createAudioSource(song)).toList();
 
     await audioPlayer
@@ -69,7 +69,6 @@ class JustAudioPlayerHandler extends BaseAudioHandler with QueueHandler, SeekHan
     queue.value.clear();
     queue.value.addAll(songs);
     queue.add(queue.value);
-    //print('Queue from init => ${queue.value}');
     _listenForCurrentSongIndexChanges();
 
     audioPlayer.processingStateStream.listen((state){
@@ -100,11 +99,6 @@ class JustAudioPlayerHandler extends BaseAudioHandler with QueueHandler, SeekHan
     play();
   }
 
-  // @override
-  // Future<void> removeQueueItemAt(int index)async{
-  //   audioSources.removeAt(index);
-  // }
-
   @override
   Future<void> updateQueue(List<MediaItem> newQueue)async{
     audioSources.clear();
@@ -113,7 +107,6 @@ class JustAudioPlayerHandler extends BaseAudioHandler with QueueHandler, SeekHan
 
   @override
   Future<void> setShuffleMode(AudioServiceShuffleMode shuffleMode)async{
-    //print('===>>>hit<<<<====');
     if(shuffleMode == AudioServiceShuffleMode.all){
       audioPlayer.setShuffleModeEnabled(true);
     }else{
