@@ -2,6 +2,7 @@
 
 A new Flutter project that can play from device storage with 
  - active autoplay
+ - shuffle and loop mode
  - playlist modification
  - background play
  - notification bar and lock screen control
