@@ -121,11 +121,79 @@ class DialogBoxPlaylistTile extends StatefulWidget {
 }
 
 class _DialogBoxPlaylistTileState extends State<DialogBoxPlaylistTile> {
+  final TextStyle dialogButtonStyle = const TextStyle(color: Colors.white);
+
+  ScaffoldFeatureController snackBar(){
+    return ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'Added to playlist',
+        ),
+        duration: Duration(seconds: 3),
+      ),
+    );
+  }
+  Future duplicateDialog(BuildContext ctx, String plName, MediaItem item){
+    return showAdaptiveDialog(
+      context: context,
+      builder: (_){
+        return AlertDialog(
+          backgroundColor: TColor.primary,
+          title: const Text(
+            'Are you sure?',
+            style: TextStyle(
+              fontWeight: FontWeight.w600
+            ),
+          ),
+          content: const Text(
+              "Looks like you've already saved this to the playlist.",
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 12,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Cancel',
+                style: dialogButtonStyle
+              )
+            ),
+            TextButton(
+              onPressed: (){
+                widget.playlistController.addAudioToPlaylist(plName, item);
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+                snackBar();
+              },
+              child: Text(
+                'Add to playlist',
+                style: dialogButtonStyle,
+              )
+            )
+          ],
+        );
+      }
+    );
+  }
   Future handleTap(String plName, MediaItem item)async{
+    final isAlreadyAdded = await widget.playlistController.alreadyAdded(plName, item);
     try{
-      await widget.playlistController.addAudioToPlaylist(plName, item);
+      if(isAlreadyAdded && mounted){
+        duplicateDialog(context, plName, item);
+
+      }else{
+        widget.playlistController.addAudioToPlaylist(plName, item);
+        if(mounted) {
+          snackBar();
+          Navigator.of(context).pop();
+        }
+      }
     }finally{
-      if(mounted) Navigator.of(context).pop();
+      null;
     }
   }
   @override
@@ -138,8 +206,8 @@ class _DialogBoxPlaylistTileState extends State<DialogBoxPlaylistTile> {
           fontSize: 14
         ),
       ),
-      onTap:()async{
-        await handleTap(widget.playlistName, widget.audio);
+      onTap:(){
+        handleTap(widget.playlistName, widget.audio);
       }
     );
   }
@@ -168,8 +236,8 @@ class DialogTitleWidget extends StatelessWidget {
             child: Text(
               'Add to playlist',
               style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600
+                fontSize: 20,
+                fontWeight: FontWeight.w600
               ),
             ),
           ),

@@ -178,6 +178,8 @@ class BottomSheetWidgets extends StatelessWidget {
               ),
             ),
             onTap: (){
+              //popping the BottomSheet then rendering the DialogBox
+              Navigator.of(context).pop();
               showAdaptiveDialog(
                 context: context,
                 builder: (_){
@@ -188,6 +190,7 @@ class BottomSheetWidgets extends StatelessWidget {
                   );
                 }
               );
+
             },
           )
         ],

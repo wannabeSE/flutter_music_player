@@ -11,7 +11,6 @@ class PlaylistController extends GetxController{
   static const String playlistPrefKey = 'playlists';
   static const String playlistKeys = 'pKey';
   List<String> allPlaylistKeys = [];
-
   @override
   void onInit()async{
     super.onInit();
@@ -19,35 +18,55 @@ class PlaylistController extends GetxController{
     await getAllPlaylistKeys();
   }
 
-  Future saveChanges()async{
+  Future savePlaylistChanges()async{
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final SharedPreferences prefKeys = await SharedPreferences.getInstance();
     await prefs.setStringList(playlistPrefKey, allPlaylistsName);
     await prefKeys.setStringList(playlistKeys, allPlaylistKeys);
     allPlaylistsName.refresh();
   }
-
+  Future<void> updatePlaylist(String playlistKey, List<MediaItem> updatedAudioList)async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final List<String> convertedAudios = updatedAudioList.map((audio) => jsonEncode(
+        MediaItemHelper.mediaItemToMap(audio)))
+        .toList();
+    await prefs.setStringList(playlistKey, convertedAudios);
+  }
+  Future<bool> alreadyAdded(String playlistKey,MediaItem item)async{
+    playlistKey = playlistKey.replaceAll(' ', '_');
+    bool isPresent = false;
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    final loadedPlaylist = pref.getStringList(playlistKey) ?? [];
+    final convertedMediaItemList = loadedPlaylist.map((media) =>
+        MediaItemHelper.mapToMediaItem(jsonDecode(media)))
+        .toList();
+    isPresent = convertedMediaItemList.any((m) => m.id == item.id);
+    return isPresent;
+  }
   Future createNewPlaylist(String playlistName)async{
     String createdPlaylistKey = playlistName.replaceAll(' ', '_');
     allPlaylistKeys.add(createdPlaylistKey);
     allPlaylistsName.add(playlistName);
-    await saveChanges();
+    await savePlaylistChanges();
   }
-  //? might require tweaking
-  Future addAudioToPlaylist(String plName, MediaItem item)async{
-    String createdKey = plName.replaceAll(' ', '_');
+  Future addAudioToPlaylist(String playlistKey, MediaItem item)async{
+    playlistKey = playlistKey.replaceAll(' ', '_');
     final SharedPreferences pref = await SharedPreferences.getInstance();
-    //String key = allPlaylistKeys.where((k) => plKey == k) as String;
-    List<String>? loadedPlaylistAudios = pref.getStringList(createdKey) ?? [];
+    List<String>? loadedPlaylistAudios = pref.getStringList(playlistKey) ?? [];
     final convertedMediaItem = jsonEncode(MediaItemHelper.mediaItemToMap(item));
     loadedPlaylistAudios.add(convertedMediaItem);
-    await pref.setStringList(createdKey, loadedPlaylistAudios);
+    await pref.setStringList(playlistKey, loadedPlaylistAudios);
+  }
+  Future<void> removeAudioFromPlaylist(String plKey, MediaItem audio)async{
+    plKey = plKey.replaceAll(' ', '_');
+    currentLoadedPlaylist.removeWhere((i) => i.id == audio.id);
+    updatePlaylist(plKey, currentLoadedPlaylist);
   }
 
   Future deletePlaylist(int index)async{
     allPlaylistsName.removeAt(index);
     allPlaylistKeys.removeAt(index);
-    await saveChanges();
+    await savePlaylistChanges();
   }
 
   Future getAllPlaylists()async{

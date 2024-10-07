@@ -19,8 +19,7 @@ class AudioPlayerService extends GetxService {
         androidNotificationOngoing: true)
     );
   }
-
-  Future<void> loadSongs() async {
+  Future<void> loadSongs() async{
     try {
       final loadedSongs = await songController.getDeviceSongs();
         await justAudioPlayerHandler.switchPlaylist(loadedSongs);
@@ -30,12 +29,6 @@ class AudioPlayerService extends GetxService {
     }
   }
   Future<void> loadNewPlaylistSongs(String plKey)async{
-    // try{
-    //   final loadedSongs = await songController.getLikedPlaylistSongs();
-    //   await justAudioPlayerHandler.switchPlaylist(loadedSongs);
-    // }catch(e){
-    //   debugPrint('Error loading new playlist $e');
-    // }
     try{
       final loadedAudios = await playlistController.getPlaylistAudios(plKey);
       await justAudioPlayerHandler.switchPlaylist(loadedAudios);
