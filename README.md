@@ -33,5 +33,5 @@ A new Flutter project that can play from device storage with
 # Audio player lock screen
 ![lock screen view](https://res.cloudinary.com/dcmgtfqoi/image/upload/v1725646487/lock_screen_hablqw.png)
 
-# Playlist screen
-![playlist view](https://res.cloudinary.com/dcmgtfqoi/image/upload/v1727108382/playlist_view_nyxywf.png)
+# All Playlist 
+![all playlist view](https://res.cloudinary.com/dcmgtfqoi/image/upload/v1728332950/pl_lib_dl5cr5.png)
