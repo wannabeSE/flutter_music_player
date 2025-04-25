@@ -11,7 +11,7 @@ Future<MediaItem> songModelToMediaItem(SongModel song)async{
       id: song.uri.toString(),
       title: FormatterUtility.formattedTitle(song.title).trim(),
       artist: FormatterUtility.formattedArtist(song.artist).trim(),
-      extras: {'song_id': song.id, 'isFav': false},
+      extras: {'song_id': song.id},
       duration: Duration(milliseconds: song.duration!)
     );
   }catch(e){

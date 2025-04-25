@@ -88,6 +88,7 @@ class AudioTile extends StatelessWidget {
                       return BottomSheetWidgetsPlaylistScreen(
                         item: item,
                         index: index,
+                        audioPlayerHandler: audioHandler,
                       );
                     }
                     return BottomSheetWidgetsMainScreen(item: item);

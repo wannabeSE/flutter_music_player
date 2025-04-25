@@ -70,7 +70,7 @@ class PlaylistController extends GetxController{
   }
   Future<void> removeAudioFromPlaylist(int index)async{
     currentLoadedPlaylist.removeAt(index);
-    updatePlaylist(currentPlaylistKey, currentLoadedPlaylist);
+    await updatePlaylist(currentPlaylistKey, currentLoadedPlaylist);
   }
 
   Future deletePlaylist(int index)async{

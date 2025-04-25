@@ -131,7 +131,7 @@ class _DialogBoxPlaylistTileState extends State<DialogBoxPlaylistTile> {
         content: Text(
           'Added to playlist',
         ),
-        duration: Duration(seconds: 3),
+        duration: Duration(seconds: 2),
       ),
     );
   }
