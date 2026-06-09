@@ -23,8 +23,7 @@ class PlaylistAudioList extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            onPressed: ()async{
-              await audioPlayerService.playlistSwitcher();
+            onPressed: (){
               Get.back();
             },
             icon: SvgPicture.asset(

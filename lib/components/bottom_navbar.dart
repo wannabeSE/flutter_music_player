@@ -17,7 +17,8 @@ class BottomNavbar extends StatelessWidget {
           NavigationBar(
             height: 70,
             selectedIndex: navController.selectedIndex.value,
-            onDestinationSelected: (index) => navController.selectedIndex.value = index,
+            onDestinationSelected: (index) =>
+                navController.selectedIndex.value = index,
             destinations: [
               NavigationDestination(
                 icon: SvgPicture.asset(

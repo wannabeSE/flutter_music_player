@@ -52,3 +52,6 @@ ios/Flutter/Release.xcconfig
 ios/Flutter/Debug.xcconfig
 ios/Flutter/Release.xcconfig
 macos/Flutter/Flutter-Release.xcconfig
+
+# Cursor related
+.cursor/

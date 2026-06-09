@@ -29,19 +29,11 @@ class AudioTile extends StatelessWidget {
 
     Future<void> handleTap()async{
       try{
-        if(audioPlayerService.songController.currentPlayingSongIndex.value == index){
-          if(audioPlayerService.songController.isPlaying.value){
-            await audioHandler.pause();
-            audioPlayerService.songController.isPlaying(false);
-          }else{
-            await audioHandler.play();
-            audioPlayerService.songController.isPlaying(true);
-          }
-        }else{
-          await audioHandler.skipToQueueItem(index);
-          audioPlayerService.songController.isPlaying(true);
-          audioPlayerService.songController.currentPlayingSongIndex(index);
-        }
+        await audioPlayerService.onSongTapped(
+          fromPlaylist: flag,
+          index: index,
+          item: item,
+        );
         await Get.to(
           AudioPlayerScreen(audioHandler: audioHandler,),
           transition: Transition.rightToLeft,

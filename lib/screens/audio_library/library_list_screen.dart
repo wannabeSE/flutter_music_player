@@ -167,8 +167,8 @@ class PlaylistTile extends StatelessWidget {
                 ),
               ),
         onTap: () async {
-          await audioPlayerService.playlistSwitcher(
-              playlistName: playlistController.allPlaylistKeys[index]);
+          await playlistController
+              .getPlaylistAudios(playlistController.allPlaylistKeys[index]);
           Get.to(PlaylistAudioList(
             audioPlayerService: audioPlayerService,
             plController: playlistController,
